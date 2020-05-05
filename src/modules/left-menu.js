@@ -26,11 +26,19 @@ function getProjectName() {
 function addProjectLink(name) {
     const leftMenu = document.querySelector('#left-menu-content')
 
+    const projectDiv = document.createElement('div')
+
     const projectName = document.createElement('div');
     projectName.innerText = name
     projectName.classList.add('project-name')
+    projectDiv.appendChild(projectName)
 
-    leftMenu.appendChild(projectName)
+    const removeBtn = document.createElement('button')
+    removeBtn.classList.add('project-remove')
+    removeBtn.innerHTML = '-'
+    projectDiv.appendChild(removeBtn)
+
+    leftMenu.appendChild(projectDiv)
 
 }
 
@@ -42,5 +50,14 @@ function removeInputField() {
     
 }
 
+function deleteProject(event) {
+    const project = event.target.parentNode
+    const projectName = project.childNodes[0]
+    const removeBtn = project.childNodes[1]
 
-export { generateProjectMenu, getProjectName, addProjectLink, removeInputField }
+    projectName.parentNode.removeChild(projectName)
+    removeBtn.parentNode.removeChild(removeBtn)
+}
+
+
+export { generateProjectMenu, getProjectName, addProjectLink, removeInputField, deleteProject }

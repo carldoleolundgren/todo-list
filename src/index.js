@@ -1,4 +1,4 @@
-import { generateProjectMenu, getProjectName, addProjectLink, removeInputField } from './modules/left-menu'
+import { generateProjectMenu, getProjectName, addProjectLink, removeInputField, deleteProject } from './modules/left-menu'
 
 let project = (() => {
     newName;
@@ -10,11 +10,17 @@ generateProjectMenu();
 (function addAddBtnEventListener() {
     document.querySelector('.project-add').addEventListener('click', () => {
         project.newName = getProjectName()
-        console.log(project.newName);
     
         addProjectLink(project.newName);
         removeInputField();
         generateProjectMenu();
         addAddBtnEventListener();
     })
+
+    if (document.querySelector('.project-remove')) {
+        document.querySelector('.project-remove').addEventListener('click', (event) => {
+            deleteProject(event)
+        })
+    }
+
 })();

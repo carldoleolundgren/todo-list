@@ -26,14 +26,14 @@ body {
     left: 10%;
 }
 
-.project-input, .project-add, .project-remove {
+.project-input, .project-add, .project-remove, .project-name {
     border: 0px;
     font-size: large;
     background-color: rgb(250,250,250);  
     display: inline-block;  
 }
 
-.project-input {
+.project-input, .project-name {
     width: 188px;
 }
 

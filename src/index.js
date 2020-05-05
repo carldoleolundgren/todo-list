@@ -17,10 +17,12 @@ generateProjectMenu();
         addAddBtnEventListener();
     })
 
-    if (document.querySelector('.project-remove')) {
-        document.querySelector('.project-remove').addEventListener('click', (event) => {
-            deleteProject(event)
-        })
+    if (document.querySelectorAll('.project-remove')) {
+        document.querySelectorAll('.project-remove').forEach( (button) => {
+            button.addEventListener('click', (event) => {
+                deleteProject(event)
+            })
+        }) 
     }
 
 })();

@@ -1,0 +1,54 @@
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#header {
+    width: 100%;
+    background-color: rgb(72,161,180);
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10%;
+}
+
+#left-menu {
+    position: absolute;
+    left: 0; 
+    top: 10%; 
+    bottom: 0;
+    width: 27%;
+    background-color: rgb(250,250,250);    
+}
+
+#left-menu-content {
+    position: absolute;
+    left: 10%;
+}
+
+.project-input, .project-add, .project-remove {
+    border: 0px;
+    font-size: large;
+    background-color: rgb(250,250,250);  
+    display: inline-block;  
+}
+
+.project-input {
+    width: 188px;
+}
+
+.project-input:focus {
+    outline: none;
+    background-color: white;  
+
+}
+
+.project-add, .project-remove {
+    font-weight: bold;    
+}
+
+.project-name {
+    font-size: large;
+}
+
+

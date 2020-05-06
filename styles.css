@@ -35,6 +35,7 @@ body {
 
 .project-input, .project-name {
     width: 188px;
+    padding: 1px 1px 3px 1px;
 }
 
 .project-input:focus {
@@ -49,6 +50,28 @@ body {
 
 .project-name {
     font-size: large;
+}
+
+#todo-window {
+    background-color: burlywood;
+    position: absolute;
+    left: 27%; 
+    top: 10%; 
+    width: 73%;
+    bottom: 0;
+}
+
+#todo-content {
+
+}
+
+#todo-content h2 {
+    text-align: center;
+}
+
+#selected-project {
+    font-weight: 900;
+    font-size: larger;
 }
 
 

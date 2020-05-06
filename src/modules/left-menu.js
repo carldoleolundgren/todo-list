@@ -17,10 +17,19 @@ function generateProjectMenu() {
 
 }
 
-function getProjectName() {
-    const input = document.querySelector('.project-input')
+function getNewProjectName() {
+    return document.querySelector('.project-input').value
+}
 
-    return input.value
+function getCurrentProjectName(event) {
+    return event.target.innerText
+}
+
+function highlightCurrentProject(event) {
+    document.querySelectorAll('.project-name').forEach( (project) => {
+        project.removeAttribute('id')
+    })
+    event.target.setAttribute('id', 'selected-project')
 }
 
 function addProjectLink(name) {
@@ -31,12 +40,15 @@ function addProjectLink(name) {
     const projectName = document.createElement('div');
     projectName.innerText = name
     projectName.classList.add('project-name')
-    projectDiv.appendChild(projectName)
 
     const removeBtn = document.createElement('button')
     removeBtn.classList.add('project-remove')
     removeBtn.innerHTML = '-'
-    projectDiv.appendChild(removeBtn)
+    
+    if (projectName.innerText != '') {
+        projectDiv.appendChild(projectName)
+        projectDiv.appendChild(removeBtn)
+    }
 
     leftMenu.appendChild(projectDiv)
 
@@ -47,7 +59,6 @@ function removeInputField() {
     const addBtn = document.querySelector('.project-add')
     input.parentNode.removeChild(input);
     addBtn.parentNode.removeChild(addBtn);
-    
 }
 
 function deleteProject(event) {
@@ -60,4 +71,5 @@ function deleteProject(event) {
 }
 
 
-export { generateProjectMenu, getProjectName, addProjectLink, removeInputField, deleteProject }
+export { generateProjectMenu, getNewProjectName, getCurrentProjectName, highlightCurrentProject, 
+        addProjectLink, removeInputField, deleteProject }

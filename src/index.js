@@ -58,17 +58,26 @@ generateProjectInput();
         })
     }
 
+    if (document.querySelectorAll('.todo-remove-button')) {
+        document.querySelectorAll('.todo-remove-button').forEach( (button) => {
+            button.addEventListener('click', (event) => {
+                console.log(event.target.parentNode.rowIndex);
+            })
+        })
+    }
+
 })();
 
-// add checkbox
+// make delete-todo button work
 // organize todos by done vs not, then priority, then alpha
-// beautify todo items
+// add color based on priority
 // add date things
 // create expandable edit menu 
-// make delete-todo button work
-// add color based on priority
-// fix selector so it appears as correct priority
 // add local storage 
+// make enter key add new project or new todo
 
 // make specific set of todos appear based on what project you're in
 // add ability to add todo item on project page
+// add checkbox
+// beautify todo items
+// fix selector so it appears as correct priority

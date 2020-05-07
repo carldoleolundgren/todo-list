@@ -27,13 +27,14 @@ const todos = [
 
 function populateTodos(project) {
     const todoContent = document.querySelector('#todo-content')
+    const todoTable = document.createElement('table')
 
     for (let index in todos[project]) {
-        let tableRow = document.createElement('div')
+        let tableRow = document.createElement('tr')
         tableRow.classList.add('todo-row')
 
         for (let key in todos[project][index]) {
-            let tableCell = document.createElement('div')
+            let tableCell = document.createElement('td')
             tableCell.classList.add('todo-cell')
             if (key == 'priority') {
                 addPrioritySelector(tableCell, todos, index, key, project)  
@@ -53,7 +54,10 @@ function populateTodos(project) {
         }
         addCheckbox(tableRow)
         addDeleteBtn(tableRow, todoContent)    
+        todoTable.appendChild(tableRow)
+        todoContent.appendChild(todoTable)
     }
+    
 }
 
 function addPrioritySelector(tableCell, todos, index, key, project) {
@@ -78,22 +82,23 @@ function addPrioritySelector(tableCell, todos, index, key, project) {
     }
 }
 
-function applyTodoCSS(tableCell, key) {
-    
-}
 
 function addCheckbox(tableRow) {
     let checkbox = document.createElement('div')
     checkbox.classList.add('checkbox-unchecked')
-    tableRow.insertBefore(checkbox, tableRow.firstChild)   
+
+    let checkboxCell = document.createElement('td')
+    checkboxCell.classList.add('checkbox-div')
+    checkboxCell.appendChild(checkbox)
+
+    tableRow.insertBefore(checkboxCell, tableRow.firstChild)   
 }
 
 function addDeleteBtn(tableRow, todoContent) {
     let deleteBtn = document.createElement('button')
-    deleteBtn.classList.add('delete-button')
+    deleteBtn.classList.add('todo-remove-button')
     deleteBtn.innerHTML = '-'
     tableRow.appendChild(deleteBtn)
-    todoContent.appendChild(tableRow)
 }
 
 function generateTodoInput() {

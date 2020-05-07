@@ -91,17 +91,26 @@ body {
     margin-left: 5%;
 }
 
-.todo-title {
-    margin-left: 5%;
-    width: 47%;
+table {
+    width: 100%;
+
 }
 
-.todo-date, .todo-priority, .delete-button, button.todo-add-button {
-    margin-left: 5%;
+td.checkbox-div {
+    padding-left: 5%;
 }
 
-.todo-row {
-    padding-bottom: 4%;
+td.todo-title {
+    width: 56.5%;
+    padding-left: 5%;
+}
+
+td.todo-date {
+    padding-right: 5%;
+}
+
+button.todo-remove-button {
+    float: right;
 }
 
 input.date-input {
@@ -120,4 +129,8 @@ input.todo-input {
 
 .todo-add div {
     margin-left: 4%;
+}
+
+.todo-add-button {
+    margin-left: 5%;
 }

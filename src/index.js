@@ -60,15 +60,15 @@ generateProjectInput();
 
 })();
 
-// add ability to add todo item on project page
+// add checkbox
 // organize todos by done vs not, then priority, then alpha
 // beautify todo items
 // add date things
 // create expandable edit menu 
 // make delete-todo button work
 // add color based on priority
-// add checkbox
 // fix selector so it appears as correct priority
 // add local storage 
 
 // make specific set of todos appear based on what project you're in
+// add ability to add todo item on project page

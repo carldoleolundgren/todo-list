@@ -30,22 +30,29 @@ function populateTodos(project) {
 
     for (let index in todos[project]) {
         let tableRow = document.createElement('div')
-        
+        tableRow.classList.add('todo-row')
+
         for (let key in todos[project][index]) {
             let tableCell = document.createElement('div')
             tableCell.classList.add('todo-cell')
             if (key == 'priority') {
-                addPrioritySelector(tableCell, todos, index, key, project)
-                
+                addPrioritySelector(tableCell, todos, index, key, project)  
             } else { 
                 tableCell.innerText = todos[project][index][key]
                 tableCell.contentEditable = 'true'
             }
+            if (key == 'todoTitle') {
+                tableCell.classList.add('todo-title')
+            } else if (key == 'date') {
+                tableCell.classList.add('todo-date')
+            } else if (key == 'priority') {
+                tableCell.classList.add('todo-priority')
+            }
+            
             tableRow.appendChild(tableCell)
         }
-        let deleteBtn = addDeleteBtn()
-        tableRow.appendChild(deleteBtn)
-        todoContent.appendChild(tableRow)
+        addCheckbox(tableRow)
+        addDeleteBtn(tableRow, todoContent)    
     }
 }
 
@@ -71,11 +78,22 @@ function addPrioritySelector(tableCell, todos, index, key, project) {
     }
 }
 
-function addDeleteBtn() {
-    let deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('delete');
-    deleteBtn.innerHTML = '-    ';
-    return deleteBtn;
+function applyTodoCSS(tableCell, key) {
+    
+}
+
+function addCheckbox(tableRow) {
+    let checkbox = document.createElement('div')
+    checkbox.classList.add('checkbox-unchecked')
+    tableRow.insertBefore(checkbox, tableRow.firstChild)   
+}
+
+function addDeleteBtn(tableRow, todoContent) {
+    let deleteBtn = document.createElement('button')
+    deleteBtn.classList.add('delete-button')
+    deleteBtn.innerHTML = '-'
+    tableRow.appendChild(deleteBtn)
+    todoContent.appendChild(tableRow)
 }
 
 function generateTodoInput() {

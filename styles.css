@@ -74,4 +74,12 @@ body {
     font-size: larger;
 }
 
+.todo-cell {
+    display: inline-block;
+}
+
+.todo-add div, button, input {
+    display: inline-block;
+}
+
 

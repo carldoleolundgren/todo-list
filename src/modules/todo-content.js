@@ -9,7 +9,7 @@ function generateProjectName(name) {
     todoContent.appendChild(projectTitle)
 }
 
-const todos = [
+let todos = [
     [
         {todoTitle: 'Test this app',
         date: 'date',
@@ -102,22 +102,34 @@ function addDeleteBtn(tableRow, todoContent) {
 }
 
 function generateTodoInput() {
-    const todoContent = document.querySelector('#todo-content')
+    let table;
+    
+    if (document.querySelector('table')) {
+        table = document.querySelector('table')
+    } else if (document.querySelector('table') == null) {
+        table = document.createElement('table')
+        document.querySelector('#todo-content').appendChild(table)
+    }
 
-    const todoAdd = document.createElement('div')
-    todoAdd.classList.add('todo-add')
+    const tableRow = document.createElement('tr')
 
-    const todoInput = document.createElement('input')
-    todoInput.classList.add('todo-input')
-    todoInput.placeholder = 'Add new todo item'
-    todoAdd.appendChild(todoInput)
+    addCheckbox(tableRow)
 
+    const inputCell = document.createElement('td')
+    const titleInput = document.createElement('input')
+    inputCell.appendChild(titleInput)
+    titleInput.classList.add('todo-input')
+    titleInput.placeholder = 'Add new todo item'
+    tableRow.appendChild(inputCell)
+
+    const dateCell = document.createElement('td')
     const dateInput = document.createElement('input')
+    dateCell.appendChild(dateInput)
     dateInput.classList.add('date-input')
     dateInput.placeholder = 'Date'
-    todoAdd.appendChild(dateInput)
+    tableRow.appendChild(dateCell)
 
-    const prioritySelectorDiv = document.createElement('div')
+    const prioritySelectorCell = document.createElement('td')
     const prioritySelector = document.createElement('select')
     prioritySelector.classList.add('priority-selector')
     let arr = ['High', 'Medium', 'Low']
@@ -126,16 +138,17 @@ function generateTodoInput() {
         opt.appendChild( document.createTextNode(arr[i]) );
         prioritySelector.appendChild(opt)
     }
-    prioritySelectorDiv.appendChild(prioritySelector)
-    todoAdd.appendChild(prioritySelectorDiv);
+    prioritySelectorCell.appendChild(prioritySelector)
+    tableRow.appendChild(prioritySelectorCell);
 
-
+    const addBtnCell = document.createElement('td')
     const addBtn = document.createElement('button')
     addBtn.classList.add('todo-add-button')
     addBtn.innerHTML = '+';
-    todoAdd.appendChild(addBtn)
+    addBtnCell.appendChild(addBtn)
+    tableRow.appendChild(addBtnCell)
 
-    todoContent.appendChild(todoAdd);
+    table.appendChild(tableRow);
 }
 
 const todoFactory = (todoTitle, date, priority) => {
@@ -147,10 +160,13 @@ function addNewTodo(i) {
         todoFactory(
             document.querySelector('.todo-input').value, 
             document.querySelector('.date-input').value, 
-            'Medium' ///////////////////////////////////
-            )
+            document.querySelector('.priority-selector').value 
         )
-    console.log(todos[i])
+    )
+}
+
+function deleteTodo(i, event) {
+    todos[i].splice(event.target.parentNode.rowIndex, 1)
 }
 
 function clearTodos() {
@@ -169,4 +185,26 @@ function clearProjectContent(event) {
     }
 }
 
-export { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, clearTodos }
+function addTodoOnEnter() {
+    if (event.keyCode === 13) {
+        event.preventDefault()
+        document.querySelector('button.todo-add-button').click()
+        document.querySelector('input.todo-input').focus()
+        document.querySelector('input.todo-input').select()
+    }
+}
+
+function storeTodos() {
+    let todos_seralized = JSON.stringify(todos)
+    localStorage.setItem('storedTodos', todos_seralized)
+    console.log(todos_seralized)
+}
+
+function loadTodos() {
+    todos = JSON.parse(localStorage.getItem('storedTodos'))
+}
+
+
+
+export { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
+        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }

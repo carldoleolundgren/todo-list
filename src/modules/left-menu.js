@@ -72,5 +72,16 @@ function createProjectListArray(arr, name) {
     arr.push(name)
 }
 
+function addProjectOnEnter() {
+    if (event.keyCode === 13) {
+        event.preventDefault()
+        document.querySelector('button.project-add').click()
+        document.querySelector('input.project-input').focus()
+        document.querySelector('input.project-input').select()
+    }
+}
+
+function storeProjects() {}
+
 export { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
-        addProjectLink, removeProjectInput, deleteProject, createProjectListArray }
+        addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter }

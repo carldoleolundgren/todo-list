@@ -10,19 +10,7 @@ function generateProjectName(name) {
 }
 
 let todos = [
-    [
-        {todoTitle: 'Test this app',
-        date: 'date',
-        priority: 'High'}, 
-        {todoTitle: 'Access this',
-        date: 'date',
-        priority: 'Low'}
-    ],
-    [
-        {todoTitle: 'Make it perfect',
-        date: 'date',
-        priority: 'Medium'} 
-    ]
+    
 ]
 
 function populateTodos(project) {
@@ -202,6 +190,7 @@ function storeTodos() {
 
 function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'))
+    console.log(todos)
     //console.log(JSON.parse(localStorage.getItem('storedTodos')))
 }
 

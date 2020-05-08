@@ -81,7 +81,23 @@ function addProjectOnEnter() {
     }
 }
 
-function storeProjects() {}
+function storeProjects(arr) {
+    let projects_serialized = JSON.stringify(arr)
+    localStorage.setItem('storedProjects', projects_serialized)
+    console.log(projects_serialized)
+}
+
+function loadProjects(arr) {
+    arr = JSON.parse(localStorage.getItem('storedProjects'))
+    
+    for (let i = 0; i < arr.length; i++) {
+        addProjectLink(arr[i])
+        removeProjectInput()
+        generateProjectInput()
+    }
+}
+
 
 export { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
-        addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter }
+        addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter, 
+        storeProjects, loadProjects }

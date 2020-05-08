@@ -1,7 +1,8 @@
 import { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
-        addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter } from './modules/left-menu'
+    addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter, 
+    storeProjects, loadProjects } from './modules/left-menu'
 import { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
-        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }  from './modules/todo-content'
+    deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }  from './modules/todo-content'
 
 let project = (() => {
     newName;
@@ -9,7 +10,7 @@ let project = (() => {
     return {newName, currentName};
 })
 
-const projectListArray = [];
+let projectListArray = [];
 
 
 generateProjectInput();
@@ -17,11 +18,11 @@ generateProjectInput();
 (function addBtnEventListeners() {
     document.querySelector('.project-add').addEventListener('click', () => {
         project.newName = createNewProject()
-    
         addProjectLink(project.newName)
         createProjectListArray(projectListArray, project.newName)
         removeProjectInput()
         generateProjectInput()
+        storeProjects(projectListArray)
         addBtnEventListeners()
     })
 
@@ -88,7 +89,10 @@ generateProjectInput();
 
 window.addEventListener('load', () => {
     loadTodos()
+    loadProjects(projectListArray)
+    
 })
+
 
 
 // add local storage 
@@ -96,13 +100,3 @@ window.addEventListener('load', () => {
 // add color based on priority
 // add date things
 // create expandable edit menu 
-
-// make enter key add new project or new todo
-// make delete-todo button work
-// make page render in correct order after deleting todo item
-// make specific set of todos appear based on what project you're in
-// add ability to add todo item on project page
-// fix selector so it appears as correct priority from start
-// add checkbox
-// beautify todo items
-// make selector add right priority to list 

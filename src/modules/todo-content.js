@@ -202,6 +202,7 @@ function storeTodos() {
 
 function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'))
+    //console.log(JSON.parse(localStorage.getItem('storedTodos')))
 }
 
 

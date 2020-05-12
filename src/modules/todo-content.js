@@ -57,7 +57,6 @@ function populateTodos(project) {
         todoTable.appendChild(tableRow)
         todoContent.appendChild(todoTable)
     }
-    
 }
 
 function addPrioritySelector(tableCell, todos, index, key, project) {

@@ -15,23 +15,15 @@ let projectListArray = [];
 
 generateProjectInput();
 
-(function addBtnEventListeners() {
+function addBtnEventListeners() {
     document.querySelector('.project-add').addEventListener('click', () => {
-        project.newName = createNewProject()
-        addProjectLink(project.newName)
-        createProjectListArray(projectListArray, project.newName)
-        removeProjectInput()
-        generateProjectInput()
-        storeProjects(projectListArray)
-        addBtnEventListeners()
+        addOneProject(addBtnEventListeners);
     })
 
     if (document.querySelectorAll('.project-remove')) {
         document.querySelectorAll('.project-remove').forEach( (removeButton) => {
             removeButton.addEventListener('click', (event) => {
-                clearProjectContent(event)
-                deleteProject(event)
-                addBtnEventListeners()
+                removeOneProject(event, addBtnEventListeners);
             })
         }) 
     }
@@ -39,39 +31,21 @@ generateProjectInput();
     if (document.querySelectorAll('.project-name')) {
         document.querySelectorAll('.project-name').forEach( (projectDiv) => {
             projectDiv.addEventListener('click', (event) => {                
-                project.currentName = getCurrentProjectName(event)
-                generateProjectName(project.currentName)
-                highlightCurrentProject(event)
-                populateTodos(projectListArray.indexOf(project.currentName))
-                generateTodoInput()
-                addBtnEventListeners()
+                populateProjectContent(event, addBtnEventListeners);
             })
         })
     }
 
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {
-            //console.log(projectListArray.indexOf(project.currentName))
-            addNewTodo(projectListArray.indexOf(project.currentName));
-            clearTodos()
-            generateProjectName(project.currentName)
-            populateTodos(projectListArray.indexOf(project.currentName))
-            generateTodoInput()
-            storeTodos()
-            addBtnEventListeners()
+            addOneTodo(addBtnEventListeners);
         })
     }
 
     if (document.querySelectorAll('.todo-remove-button')) {
         document.querySelectorAll('.todo-remove-button').forEach( (button) => {
             button.addEventListener('click', (event) => {
-                deleteTodo(projectListArray.indexOf(project.currentName), event);
-                clearTodos();
-                generateProjectName(project.currentName);
-                populateTodos(projectListArray.indexOf(project.currentName));
-                generateTodoInput();
-                storeTodos()
-                addBtnEventListeners()
+                removeOneTodo(event, addBtnEventListeners);
             })
         })
     }
@@ -86,8 +60,58 @@ generateProjectInput();
         })
     }
 
-})();
+}
 
+window.addEventListener('load', () => {
+    projectListArray = loadProjects()
+    addBtnEventListeners()
+})
+
+function removeOneTodo(event, addBtnEventListeners) {
+    deleteTodo(projectListArray.indexOf(project.currentName), event);
+    clearTodos();
+    generateProjectName(project.currentName);
+    populateTodos(projectListArray.indexOf(project.currentName));
+    generateTodoInput();
+    storeTodos();
+    addBtnEventListeners();
+}
+
+function addOneTodo(addBtnEventListeners) {
+    addNewTodo(projectListArray.indexOf(project.currentName));
+    clearTodos();
+    generateProjectName(project.currentName);
+    populateTodos(projectListArray.indexOf(project.currentName));
+    generateTodoInput();
+    storeTodos();
+    addBtnEventListeners();
+}
+
+function populateProjectContent(event, addBtnEventListeners) {
+    project.currentName = getCurrentProjectName(event);
+    generateProjectName(project.currentName);
+    highlightCurrentProject(event);
+    populateTodos(projectListArray.indexOf(project.currentName));
+    generateTodoInput();
+    addBtnEventListeners();
+}
+
+function removeOneProject(event, addBtnEventListeners) {
+    clearProjectContent(event);
+    deleteProject(event);
+    storeProjects(projectListArray);
+    addBtnEventListeners();
+}
+
+function addOneProject(addBtnEventListeners) {
+    project.newName = createNewProject();
+    addProjectLink(project.newName);
+    createProjectListArray(projectListArray, project.newName);
+    removeProjectInput();
+    generateProjectInput();
+    storeProjects(projectListArray);
+    addBtnEventListeners();
+}
 
 // add local storage 
 // organize todos by done vs not, then priority, then alpha

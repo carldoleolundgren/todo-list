@@ -69,6 +69,7 @@ function deleteProject(event) {
 }
 
 function createProjectListArray(arr, name) {
+    if (name == '') return
     arr.push(name)
 }
 
@@ -87,14 +88,16 @@ function storeProjects(arr) {
     console.log(projects_serialized)
 }
 
-function loadProjects(arr) {
-    arr = JSON.parse(localStorage.getItem('storedProjects'))
+function loadProjects() {
+    let arr = JSON.parse(localStorage.getItem('storedProjects'))
     
     for (let i = 0; i < arr.length; i++) {
         addProjectLink(arr[i])
         removeProjectInput()
         generateProjectInput()
     }
+
+    return arr;
 }
 
 

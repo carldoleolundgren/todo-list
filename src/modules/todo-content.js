@@ -1,3 +1,19 @@
+let todos = [
+    [
+        {todoTitle: 'Test this app',
+        date: 'date',
+        priority: 'High'}, 
+        {todoTitle: 'Access this',
+        date: 'date',
+        priority: 'Low'}
+    ],
+    [
+        {todoTitle: 'Make it perfect',
+        date: 'date',
+        priority: 'Medium'} 
+    ]
+]
+
 function generateProjectName(name) {
     const todoContent = document.querySelector('#todo-content')
     todoContent.innerHTML = ''
@@ -8,10 +24,6 @@ function generateProjectName(name) {
 
     todoContent.appendChild(projectTitle)
 }
-
-let todos = [
-    
-]
 
 function populateTodos(project) {
     const todoContent = document.querySelector('#todo-content')
@@ -144,6 +156,7 @@ const todoFactory = (todoTitle, date, priority) => {
 };
 
 function addNewTodo(i) {
+    if (!todos[i]) todos[i] = []
     todos[i].push(
         todoFactory(
             document.querySelector('.todo-input').value, 
@@ -190,7 +203,6 @@ function storeTodos() {
 
 function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'))
-    console.log(todos)
     //console.log(JSON.parse(localStorage.getItem('storedTodos')))
 }
 

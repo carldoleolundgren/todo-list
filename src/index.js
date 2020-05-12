@@ -51,6 +51,7 @@ generateProjectInput();
 
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {
+            //console.log(projectListArray.indexOf(project.currentName))
             addNewTodo(projectListArray.indexOf(project.currentName));
             clearTodos()
             generateProjectName(project.currentName)
@@ -86,13 +87,6 @@ generateProjectInput();
     }
 
 })();
-
-window.addEventListener('load', () => {
-    loadTodos()
-    loadProjects(projectListArray)
-    
-})
-
 
 
 // add local storage 

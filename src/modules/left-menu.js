@@ -17,10 +17,12 @@ function generateProjectInput() {
 }
 
 function removeProjectInput() {
-    const input = document.querySelector('.project-input')
-    const addBtn = document.querySelector('.project-add')
-    input.parentNode.removeChild(input);
-    addBtn.parentNode.removeChild(addBtn);
+    if (document.querySelector('.project-input') && document.querySelector('.project-add')) {
+        const input = document.querySelector('.project-input')
+        const addBtn = document.querySelector('.project-add')
+        input.parentNode.removeChild(input);
+        addBtn.parentNode.removeChild(addBtn);
+    }
 }
 
 function createNewProject() {
@@ -59,14 +61,15 @@ function addProjectLink(name) {
     leftMenu.appendChild(projectDiv)
 }
 
-function deleteProject(event) {
+/* function deleteProject(event) {
     const project = event.target.parentNode
-    const projectName = project.childNodes[0]
+    const projectNameDiv = project.childNodes[0]
     const removeBtn = project.childNodes[1]
 
-    projectName.parentNode.removeChild(projectName)
+    projectNameDiv.parentNode.removeChild(projectNameDiv)
     removeBtn.parentNode.removeChild(removeBtn)
-}
+    
+} */
 
 function createProjectListArray(arr, name) {
     if (name == '') return
@@ -85,7 +88,7 @@ function addProjectOnEnter() {
 function storeProjects(arr) {
     let projects_serialized = JSON.stringify(arr)
     localStorage.setItem('storedProjects', projects_serialized)
-    console.log(projects_serialized)
+    //console.log(projects_serialized)
 }
 
 function loadProjects() {
@@ -102,5 +105,5 @@ function loadProjects() {
 
 
 export { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
-        addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter, 
+        addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
         storeProjects, loadProjects }

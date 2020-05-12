@@ -197,7 +197,7 @@ function addTodoOnEnter() {
 function storeTodos() {
     let todos_seralized = JSON.stringify(todos)
     localStorage.setItem('storedTodos', todos_seralized)
-    console.log(todos_seralized)
+    //console.log(todos_seralized)
 }
 
 function loadTodos() {

@@ -11,11 +11,13 @@ let project = (() => {
 })
 
 let projectListArray = [];
-
+let runCount = 0;
 
 generateProjectInput();
 
 function addBtnEventListeners() {
+    if (runCount >= 1) return
+
     document.querySelector('.project-add').addEventListener('click', () => {
         addOneProject(addBtnEventListeners);
     })
@@ -59,7 +61,8 @@ function addBtnEventListeners() {
             addTodoOnEnter()
         })
     }
-
+    
+    runCount++
 }
 
 window.addEventListener('load', () => {
@@ -75,6 +78,7 @@ function removeOneTodo(event, addBtnEventListeners) {
     generateTodoInput();
     storeTodos();
     addBtnEventListeners();
+    
 }
 
 function addOneTodo(addBtnEventListeners) {
@@ -85,6 +89,7 @@ function addOneTodo(addBtnEventListeners) {
     generateTodoInput();
     storeTodos();
     addBtnEventListeners();
+    
 }
 
 function populateProjectContent(event, addBtnEventListeners) {
@@ -94,12 +99,16 @@ function populateProjectContent(event, addBtnEventListeners) {
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
     addBtnEventListeners();
+    
 }
 
 function removeOneProject(event, addBtnEventListeners) {
     clearProjectContent(event);
-    deleteProject(event);
+    projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1)
+    console.log(projectListArray)
     storeProjects(projectListArray);
+    document.querySelector('#left-menu-content').innerHTML = ''
+    loadProjects()
     addBtnEventListeners();
 }
 
@@ -111,10 +120,16 @@ function addOneProject(addBtnEventListeners) {
     generateProjectInput();
     storeProjects(projectListArray);
     addBtnEventListeners();
+
+    console.log(projectListArray)
+    
 }
 
-// add local storage 
+// stop addBtnEventListener from running more than once
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
 // add date things
 // create expandable edit menu 
+
+// properly remove project from array when deleting, so that it doesn't populate on refresh 
+// add local storage 

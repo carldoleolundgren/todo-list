@@ -16,6 +16,7 @@ generateProjectInput();
 
 window.addEventListener('load', () => {
     projectListArray = loadProjects()
+    loadTodos()
     addBtnEventListeners()
 })
 
@@ -103,7 +104,7 @@ function populateProjectContent(event) {
 
 function removeOneProject(event) {
     clearProjectContent(event);
-    //projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
+    projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
     storeProjects(projectListArray);
     deleteProject(event)
 }
@@ -118,10 +119,12 @@ function addOneProject() {
     //console.log(projectListArray);
 }
 
-// fix local storage for todos
 // delete todos upon deleting project
-// fix remove button for todos
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
 // add date things
 // create expandable edit menu 
+
+// delete project from array upon deleting
+// fix remove button for todos
+// fix local storage for todos

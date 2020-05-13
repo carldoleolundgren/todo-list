@@ -1,6 +1,6 @@
 import { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
-    addProjectLink, removeProjectInput, deleteProject, createProjectListArray, addProjectOnEnter, 
-    storeProjects, loadProjects } from './modules/left-menu'
+    addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
+    storeProjects, loadProjects, deleteProject } from './modules/left-menu'
 import { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
     deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }  from './modules/todo-content'
 
@@ -11,21 +11,31 @@ let project = (() => {
 })
 
 let projectListArray = [];
-let runCount = 0;
 
 generateProjectInput();
 
-function addBtnEventListeners() {
-    if (runCount >= 1) return
+window.addEventListener('load', () => {
+    projectListArray = loadProjects()
+    addBtnEventListeners()
+})
 
+document.body.addEventListener('change', () => {
+    addBtnEventListeners()
+})
+
+function addBtnEventListeners() {
     document.querySelector('.project-add').addEventListener('click', () => {
-        addOneProject(addBtnEventListeners);
+        addOneProject();
     })
 
+    document.querySelector('input.project-input').addEventListener('keyup', () => {
+        addProjectOnEnter();
+    })
+    
     if (document.querySelectorAll('.project-remove')) {
         document.querySelectorAll('.project-remove').forEach( (removeButton) => {
             removeButton.addEventListener('click', (event) => {
-                removeOneProject(event, addBtnEventListeners);
+                removeOneProject(event);
             })
         }) 
     }
@@ -33,103 +43,81 @@ function addBtnEventListeners() {
     if (document.querySelectorAll('.project-name')) {
         document.querySelectorAll('.project-name').forEach( (projectDiv) => {
             projectDiv.addEventListener('click', (event) => {                
-                populateProjectContent(event, addBtnEventListeners);
+                populateProjectContent(event);
             })
         })
-    }
+    }    
 
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {
-            addOneTodo(addBtnEventListeners);
+            addOneTodo();
         })
     }
 
     if (document.querySelectorAll('.todo-remove-button')) {
         document.querySelectorAll('.todo-remove-button').forEach( (button) => {
             button.addEventListener('click', (event) => {
-                removeOneTodo(event, addBtnEventListeners);
+                removeOneTodo(event);
             })
         })
     }
 
-    document.querySelector('input.project-input').addEventListener('keyup', () => {
-        addProjectOnEnter()
-    })
-
     if (document.querySelector('input.todo-input')) {
         document.querySelector('input.todo-input').addEventListener('keyup', () => {
-            addTodoOnEnter()
+            addTodoOnEnter();
         })
     }
+
     
-    runCount++
 }
 
-window.addEventListener('load', () => {
-    projectListArray = loadProjects()
-    addBtnEventListeners()
-})
-
-function removeOneTodo(event, addBtnEventListeners) {
+function removeOneTodo(event) {
     deleteTodo(projectListArray.indexOf(project.currentName), event);
     clearTodos();
     generateProjectName(project.currentName);
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
     storeTodos();
-    addBtnEventListeners();
-    
 }
 
-function addOneTodo(addBtnEventListeners) {
+function addOneTodo() {
     addNewTodo(projectListArray.indexOf(project.currentName));
     clearTodos();
     generateProjectName(project.currentName);
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
     storeTodos();
-    addBtnEventListeners();
-    
 }
 
-function populateProjectContent(event, addBtnEventListeners) {
+function populateProjectContent(event) {
     project.currentName = getCurrentProjectName(event);
     generateProjectName(project.currentName);
     highlightCurrentProject(event);
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
-    addBtnEventListeners();
-    
 }
 
-function removeOneProject(event, addBtnEventListeners) {
+function removeOneProject(event) {
     clearProjectContent(event);
-    projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1)
-    console.log(projectListArray)
+    //projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
     storeProjects(projectListArray);
-    document.querySelector('#left-menu-content').innerHTML = ''
-    loadProjects()
-    addBtnEventListeners();
+    deleteProject(event)
 }
 
-function addOneProject(addBtnEventListeners) {
+function addOneProject() {
     project.newName = createNewProject();
     addProjectLink(project.newName);
     createProjectListArray(projectListArray, project.newName);
     removeProjectInput();
     generateProjectInput();
     storeProjects(projectListArray);
-    addBtnEventListeners();
-
-    console.log(projectListArray)
-    
+    //console.log(projectListArray);
 }
 
-// stop addBtnEventListener from running more than once
+// fix local storage for todos
+// delete todos upon deleting project
+// fix remove button for todos
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
 // add date things
 // create expandable edit menu 
-
-// properly remove project from array when deleting, so that it doesn't populate on refresh 
-// add local storage 

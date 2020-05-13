@@ -61,7 +61,7 @@ function addProjectLink(name) {
     leftMenu.appendChild(projectDiv)
 }
 
-/* function deleteProject(event) {
+function deleteProject(event) {
     const project = event.target.parentNode
     const projectNameDiv = project.childNodes[0]
     const removeBtn = project.childNodes[1]
@@ -69,7 +69,7 @@ function addProjectLink(name) {
     projectNameDiv.parentNode.removeChild(projectNameDiv)
     removeBtn.parentNode.removeChild(removeBtn)
     
-} */
+}
 
 function createProjectListArray(arr, name) {
     if (name == '') return
@@ -93,6 +93,8 @@ function storeProjects(arr) {
 
 function loadProjects() {
     let arr = JSON.parse(localStorage.getItem('storedProjects'))
+
+    if (!arr) arr = []
     
     for (let i = 0; i < arr.length; i++) {
         addProjectLink(arr[i])
@@ -103,7 +105,6 @@ function loadProjects() {
     return arr;
 }
 
-
 export { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
         addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
-        storeProjects, loadProjects }
+        storeProjects, loadProjects, deleteProject }

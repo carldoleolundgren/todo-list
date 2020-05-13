@@ -27,6 +27,20 @@ document.body.addEventListener('change', () => {
 function addBtnEventListeners() {
     document.querySelector('.project-add').addEventListener('click', () => {
         addOneProject();
+        if (document.querySelectorAll('.project-name')) {
+            document.querySelectorAll('.project-name').forEach( (projectDiv) => {
+                projectDiv.addEventListener('click', (event) => {                
+                    populateProjectContent(event);
+                    if (document.querySelectorAll('.todo-remove-button')) {
+                        document.querySelectorAll('.todo-remove-button').forEach( (button) => {
+                            button.addEventListener('click', (event) => {
+                                removeOneTodo(event);
+                            })
+                        }) 
+                    }
+                })
+            })
+        }    
     })
 
     document.querySelector('input.project-input').addEventListener('keyup', () => {
@@ -40,21 +54,6 @@ function addBtnEventListeners() {
             })
         }) 
     }
-
-    if (document.querySelectorAll('.project-name')) {
-        document.querySelectorAll('.project-name').forEach( (projectDiv) => {
-            projectDiv.addEventListener('click', (event) => {                
-                populateProjectContent(event);
-                if (document.querySelectorAll('.todo-remove-button')) {
-                    document.querySelectorAll('.todo-remove-button').forEach( (button) => {
-                        button.addEventListener('click', (event) => {
-                            removeOneTodo(event);
-                        })
-                    }) 
-                }
-            })
-        })
-    }    
 
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {

@@ -174,7 +174,7 @@ function clearTodos() {
     todoContent.innerHTML = ''
 }
 
-function clearProjectContent(event) {
+function clearProjectWindow(event) {
     if (document.querySelector('#todo-content').innerHTML == '') return
 
     let projectNameInList = event.target.parentNode.childNodes[0].innerText
@@ -183,6 +183,12 @@ function clearProjectContent(event) {
     if (projectNameInList == currentProjectName) {
         document.querySelector('#todo-content').innerHTML = ''
     }
+}
+
+function removeProjectFromTodos(index) {
+    console.log(todos)
+    todos.splice(index, 1)
+    console.log(todos)
 }
 
 function addTodoOnEnter() {
@@ -205,7 +211,5 @@ function loadTodos() {
     //console.log(JSON.parse(localStorage.getItem('storedTodos')))
 }
 
-
-
-export { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
-        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }
+export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
+        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos }

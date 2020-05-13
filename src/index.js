@@ -1,8 +1,8 @@
 import { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
     addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
     storeProjects, loadProjects, removeProjectFromMenu } from './modules/left-menu'
-import { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
-    deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }  from './modules/todo-content'
+import { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
+    deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos }  from './modules/todo-content'
 
 let project = (() => {
     newName;
@@ -107,12 +107,14 @@ function addOneProject() {
 }
 
 function removeOneProject(event) {
-    clearProjectContent(event);
+    clearProjectWindow(event);
     if (event.target.parentNode) {
+        removeProjectFromTodos(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText));
         projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
     }
     storeProjects(projectListArray);
-    removeProjectFromMenu(event)
+    storeTodos();
+    removeProjectFromMenu(event);
 }
 
 function populateProjectContent(event) {

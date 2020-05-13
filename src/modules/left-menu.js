@@ -61,7 +61,9 @@ function addProjectLink(name) {
     leftMenu.appendChild(projectDiv)
 }
 
-function deleteProject(event) {
+function removeProjectFromMenu(event) {
+    if (event.target.parentNode == null) return
+    
     const project = event.target.parentNode
     const projectNameDiv = project.childNodes[0]
     const removeBtn = project.childNodes[1]
@@ -107,4 +109,4 @@ function loadProjects() {
 
 export { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
         addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
-        storeProjects, loadProjects, deleteProject }
+        storeProjects, loadProjects, removeProjectFromMenu }

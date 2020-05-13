@@ -1,6 +1,6 @@
 import { generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject, 
     addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
-    storeProjects, loadProjects, deleteProject } from './modules/left-menu'
+    storeProjects, loadProjects, removeProjectFromMenu } from './modules/left-menu'
 import { generateProjectName, clearProjectContent, populateTodos, generateTodoInput, addNewTodo, 
     deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos }  from './modules/todo-content'
 
@@ -45,6 +45,13 @@ function addBtnEventListeners() {
 
     document.querySelector('input.project-input').addEventListener('keyup', () => {
         addProjectOnEnter();
+        if (document.querySelectorAll('.project-remove')) {
+            document.querySelectorAll('.project-remove').forEach( (removeButton) => {
+                removeButton.addEventListener('click', (event) => {
+                    removeOneProject(event);
+                })
+            }) 
+        }
     })
     
     if (document.querySelectorAll('.project-remove')) {
@@ -73,15 +80,47 @@ function addBtnEventListeners() {
             addTodoOnEnter();
         })
     }    
+
+    if (document.querySelectorAll('.project-name')) {
+        document.querySelectorAll('.project-name').forEach( (projectDiv) => {
+            projectDiv.addEventListener('click', (event) => {                
+                populateProjectContent(event);
+                if (document.querySelectorAll('.todo-remove-button')) {
+                    document.querySelectorAll('.todo-remove-button').forEach( (button) => {
+                        button.addEventListener('click', (event) => {
+                            removeOneTodo(event);
+                        })
+                    }) 
+                }
+            })
+        })
+    }    
 }
 
-function removeOneTodo(event) {
-    deleteTodo(projectListArray.indexOf(project.currentName), event);
-    clearTodos();
+function addOneProject() {
+    project.newName = createNewProject();
+    addProjectLink(project.newName);
+    createProjectListArray(projectListArray, project.newName);
+    removeProjectInput();
+    generateProjectInput();
+    storeProjects(projectListArray);
+}
+
+function removeOneProject(event) {
+    clearProjectContent(event);
+    if (event.target.parentNode) {
+        projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
+    }
+    storeProjects(projectListArray);
+    removeProjectFromMenu(event)
+}
+
+function populateProjectContent(event) {
+    project.currentName = getCurrentProjectName(event);
     generateProjectName(project.currentName);
+    highlightCurrentProject(event);
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
-    storeTodos();
 }
 
 function addOneTodo() {
@@ -93,29 +132,13 @@ function addOneTodo() {
     storeTodos();
 }
 
-function populateProjectContent(event) {
-    project.currentName = getCurrentProjectName(event);
+function removeOneTodo(event) {
+    deleteTodo(projectListArray.indexOf(project.currentName), event);
+    clearTodos();
     generateProjectName(project.currentName);
-    highlightCurrentProject(event);
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
-}
-
-function removeOneProject(event) {
-    clearProjectContent(event);
-    projectListArray.splice(projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText), 1);
-    storeProjects(projectListArray);
-    deleteProject(event)
-}
-
-function addOneProject() {
-    project.newName = createNewProject();
-    addProjectLink(project.newName);
-    createProjectListArray(projectListArray, project.newName);
-    removeProjectInput();
-    generateProjectInput();
-    storeProjects(projectListArray);
-    //console.log(projectListArray);
+    storeTodos();
 }
 
 // delete todos upon deleting project

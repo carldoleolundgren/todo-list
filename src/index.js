@@ -44,6 +44,13 @@ function addBtnEventListeners() {
         document.querySelectorAll('.project-name').forEach( (projectDiv) => {
             projectDiv.addEventListener('click', (event) => {                
                 populateProjectContent(event);
+                if (document.querySelectorAll('.todo-remove-button')) {
+                    document.querySelectorAll('.todo-remove-button').forEach( (button) => {
+                        button.addEventListener('click', (event) => {
+                            removeOneTodo(event);
+                        })
+                    }) 
+                }
             })
         })
     }    
@@ -51,14 +58,13 @@ function addBtnEventListeners() {
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {
             addOneTodo();
-        })
-    }
-
-    if (document.querySelectorAll('.todo-remove-button')) {
-        document.querySelectorAll('.todo-remove-button').forEach( (button) => {
-            button.addEventListener('click', (event) => {
-                removeOneTodo(event);
-            })
+            if (document.querySelectorAll('.todo-remove-button')) {
+                document.querySelectorAll('.todo-remove-button').forEach( (button) => {
+                    button.addEventListener('click', (event) => {
+                        removeOneTodo(event);
+                    })
+                }) 
+            }
         })
     }
 
@@ -66,9 +72,7 @@ function addBtnEventListeners() {
         document.querySelector('input.todo-input').addEventListener('keyup', () => {
             addTodoOnEnter();
         })
-    }
-
-    
+    }    
 }
 
 function removeOneTodo(event) {

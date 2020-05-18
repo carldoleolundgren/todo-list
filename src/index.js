@@ -109,9 +109,13 @@ function addBtnEventListeners() {
                 button.addEventListener('click', () => {
                     if (button.innerText == 'Edit') {
                         createEditFields(button)
+                        button.classList.remove('todo-edit-button')
+                        button.classList.add('todo-save-button')
                         button.innerText = 'Save'
                     } else {
                         saveEditedFields(button, projectListArray.indexOf(project.currentName), project.currentName)
+                        button.classList.remove('todo-save-button')
+                        button.classList.add('todo-edit-button')
                         button.innerText = 'Edit'
                     }
                 });

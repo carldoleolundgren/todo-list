@@ -109,3 +109,7 @@ input.date-input {
 .todo-edit-button {
     background-color: cornflowerblue;
 }
+
+.todo-save-button {
+    background-color: crimson;
+}

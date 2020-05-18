@@ -12,6 +12,7 @@ let project = (() => {
 })
 
 let projectListArray = [];
+let editClicked = false;
 
 generateProjectInput();
 
@@ -32,13 +33,7 @@ function addBtnEventListeners() {
             document.querySelectorAll('.project-name').forEach( (projectDiv) => {
                 projectDiv.addEventListener('click', (event) => {                
                     populateProjectContent(event);
-                    if (document.querySelectorAll('.todo-remove-button')) {
-                        document.querySelectorAll('.todo-remove-button').forEach( (button) => {
-                            button.addEventListener('click', (event) => {
-                                removeOneTodo(event);
-                            })
-                        }) 
-                    }
+                    addTodoRemoveListener();
                 })
             })
         }    
@@ -81,46 +76,51 @@ function addBtnEventListeners() {
             })
         })
     }
-    
+}
 
-    function addProjectRemoveListener() {
-        if (document.querySelectorAll('.project-remove')) {
-            document.querySelectorAll('.project-remove').forEach((removeButton) => {
-                removeButton.addEventListener('click', (event) => {
-                    removeOneProject(event);
-                });
+function addProjectRemoveListener() {
+    if (document.querySelectorAll('.project-remove')) {
+        document.querySelectorAll('.project-remove').forEach((removeButton) => {
+            removeButton.addEventListener('click', (event) => {
+                removeOneProject(event);
             });
-        }
+        });
     }
+}
 
-    function addTodoRemoveListener() {
-        if (document.querySelectorAll('.todo-remove-button')) {
-            document.querySelectorAll('.todo-remove-button').forEach((button) => {
-                button.addEventListener('click', (event) => {
-                    removeOneTodo(event);
-                });
+function addTodoRemoveListener() {
+    if (document.querySelectorAll('.todo-remove-button')) {
+        document.querySelectorAll('.todo-remove-button').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                removeOneTodo(event);
+                addTodoRemoveListener();
+                addEditListeners();
             });
-        }
+        });
     }
+}
 
-    function addEditListeners() {
-        if (document.querySelectorAll('.todo-edit-button')) {
-            document.querySelectorAll('.todo-edit-button').forEach((button) => {
-                button.addEventListener('click', () => {
-                    if (button.innerText == 'Edit') {
-                        createEditFields(button)
-                        button.classList.remove('todo-edit-button')
-                        button.classList.add('todo-save-button')
-                        button.innerText = 'Save'
-                    } else {
-                        saveEditedFields(button, projectListArray.indexOf(project.currentName), project.currentName)
-                        button.classList.remove('todo-save-button')
-                        button.classList.add('todo-edit-button')
-                        button.innerText = 'Edit'
-                    }
-                });
+function addEditListeners() {
+    if (document.querySelectorAll('.todo-edit-button')) {
+        document.querySelectorAll('.todo-edit-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                if (button.innerText == 'Edit' && editClicked == false) {
+                    createEditFields(button)
+                    button.classList.remove('todo-edit-button')
+                    button.classList.add('todo-save-button')
+                    button.innerText = 'Save'
+                    editClicked = true
+                } else if (button.innerText == 'Save' && editClicked == true) {
+                    saveEditedFields(button, projectListArray.indexOf(project.currentName), project.currentName)
+                    button.classList.remove('todo-save-button')
+                    button.classList.add('todo-edit-button')
+                    button.innerText = 'Edit'
+                    addEditListeners()
+                    editClicked = false;
+                }
+                addTodoRemoveListener();
             });
-        }
+        });
     }
 }
 
@@ -171,8 +171,10 @@ function removeOneTodo(event) {
     storeTodos();
 }
 
-// editing date in old todos doesn't work
 // deleting one todo deletes two sometimes
-// can't delete more than one todo
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
+
+// can't delete any todos after editing/saving one
+// can't delete todos more than once, eventListeners not working
+// editing date in old todos doesn't work

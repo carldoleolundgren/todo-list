@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 let todos = [
     [
         {todoTitle: 'Test this app',
@@ -13,6 +15,12 @@ let todos = [
         priority: 'Medium'} 
     ]
 ]
+
+function formatDate(date) {
+    const month = format(new Date(date), 'MMM')
+    const day = new Date(date).getUTCDate()
+    return `${day} ${month}`
+  }
 
 function generateProjectName(name) {
     const todoContent = document.querySelector('#todo-content')
@@ -36,12 +44,8 @@ function populateTodos(project) {
         for (let key in todos[project][index]) {
             let tableCell = document.createElement('td')
             tableCell.classList.add('todo-cell')
-            if (key == 'priority') {
-                addPrioritySelector(tableCell, todos, index, key, project)  
-            } else { 
-                tableCell.innerText = todos[project][index][key]
-                tableCell.contentEditable = 'true'
-            }
+            tableCell.innerText = todos[project][index][key]
+            
             if (key == 'todoTitle') {
                 tableCell.classList.add('todo-title')
             } else if (key == 'date') {
@@ -53,34 +57,12 @@ function populateTodos(project) {
             tableRow.appendChild(tableCell)
         }
         addCheckbox(tableRow)
-        addDeleteBtn(tableRow, todoContent)    
+        addDeleteBtn(tableRow)  
+        addEditBtn(tableRow)  
         todoTable.appendChild(tableRow)
         todoContent.appendChild(todoTable)
     }
 }
-
-function addPrioritySelector(tableCell, todos, index, key, project) {
-    let readSelector = document.createElement('select');
-    tableCell.appendChild(readSelector);
-    
-    let array = ['High', 'Medium', 'Low'];
-    for (let i = 0; i < array.length; i++) {
-        let option = document.createElement("option");
-        option.value = array[i];
-        option.text = array[i];
-        readSelector.appendChild(option);
-    }
-
-    let chosenSelectorOption = todos[project][index][key];
-
-    for(let i, j = 0; i = readSelector.options[j]; j++) {
-        if (i.value == chosenSelectorOption) {
-            readSelector.selectedIndex = j;
-            break;
-        }
-    }
-}
-
 
 function addCheckbox(tableRow) {
     let checkbox = document.createElement('div')
@@ -93,11 +75,18 @@ function addCheckbox(tableRow) {
     tableRow.insertBefore(checkboxCell, tableRow.firstChild)   
 }
 
-function addDeleteBtn(tableRow, todoContent) {
+function addDeleteBtn(tableRow) {
     let deleteBtn = document.createElement('button')
     deleteBtn.classList.add('todo-remove-button')
     deleteBtn.innerHTML = '-'
     tableRow.appendChild(deleteBtn)
+}
+
+function addEditBtn(tableRow) {
+    let editBtn = document.createElement('button')
+    editBtn.classList.add('todo-edit-button')
+    editBtn.innerHTML = 'Edit'
+    tableRow.appendChild(editBtn)
 }
 
 function generateTodoInput() {
@@ -125,7 +114,9 @@ function generateTodoInput() {
     const dateInput = document.createElement('input')
     dateCell.appendChild(dateInput)
     dateInput.classList.add('date-input')
-    dateInput.placeholder = 'Date'
+    dateInput.type = 'date'
+    
+    //dateInput.value = test
     tableRow.appendChild(dateCell)
 
     const prioritySelectorCell = document.createElement('td')
@@ -156,13 +147,25 @@ const todoFactory = (todoTitle, date, priority) => {
 
 function addNewTodo(i) {
     if (!todos[i]) todos[i] = []
-    todos[i].push(
-        todoFactory(
-            document.querySelector('.todo-input').value, 
-            document.querySelector('.date-input').value, 
-            document.querySelector('.priority-selector').value 
+
+    if (document.querySelector('.date-input').valueAsDate == null) {
+        todos[i].push(
+            todoFactory(
+                document.querySelector('.todo-input').value, 
+                formatDate(new Date()), 
+                document.querySelector('.priority-selector').value 
+            )
         )
-    )
+    } else {
+        todos[i].push(
+            todoFactory(
+                document.querySelector('.todo-input').value, 
+                formatDate(document.querySelector('.date-input').value), 
+                document.querySelector('.priority-selector').value 
+            )
+        )
+    }
+    
 }
 
 function deleteTodo(i, event) {
@@ -186,9 +189,7 @@ function clearProjectWindow(event) {
 }
 
 function removeProjectFromTodos(index) {
-    console.log(todos)
     todos.splice(index, 1)
-    console.log(todos)
 }
 
 function addTodoOnEnter() {
@@ -203,13 +204,92 @@ function addTodoOnEnter() {
 function storeTodos() {
     let todos_seralized = JSON.stringify(todos)
     localStorage.setItem('storedTodos', todos_seralized)
-    //console.log(todos_seralized)
 }
 
 function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'))
-    //console.log(JSON.parse(localStorage.getItem('storedTodos')))
 }
 
+function createEditFields(button) {
+    let row = button.parentNode
+    row.classList.add('editable-row')
+    
+    let title = button.parentNode.childNodes[1]
+    title.contentEditable = true
+    
+    let date = button.parentNode.childNodes[2]
+    date.innerHTML = ''
+    
+    let dateInput = document.createElement('input')
+    dateInput.type = 'date'
+    date.appendChild(dateInput)
+    
+    let priorityCell = button.parentNode.childNodes[3]
+    let priorityValue = button.parentNode.childNodes[3].innerText
+    priorityCell.innerHTML = ''
+    addPrioritySelector(priorityCell, priorityValue)
+}
+
+function saveEditedFields(button, projectIndex, projectName) {
+    let row = button.parentNode
+    row.classList.remove('editable-row')
+
+    let rowIndex = button.parentNode.rowIndex
+    
+    let newTitle = button.parentNode.childNodes[1].innerText
+    
+    let newDate; 
+    console.log(button.parentNode.childNodes[2].firstChild.valueAsDate)
+    
+    if (button.parentNode.childNodes[2].firstChild.valueAsDate == null) {
+        newDate = new Date().toDateString()
+        console.log(newDate)
+    } else {
+        let newDate = button.parentNode.childNodes[2].firstChild.valueAsDate
+        console.log(newDate)
+        newDate = new Date(newDate.getDate()).toDateString() ///////////////////
+    }
+    
+    let newPriority = button.parentNode.childNodes[3].firstChild.value
+    
+    todos[projectIndex][rowIndex].todoTitle = newTitle
+    todos[projectIndex][rowIndex].date = newDate
+    todos[projectIndex][rowIndex].priority = newPriority
+    console.log(todos[projectIndex][rowIndex])
+
+    storeTodos()
+    const todoContent = document.querySelector('#todo-content')
+    todoContent.innerHTML = ''
+
+    generateProjectName(projectName)
+    populateTodos(projectIndex) 
+    generateTodoInput()
+}
+
+function addPrioritySelector(tableCell, priorityValue) {
+    let readSelector = document.createElement('select');
+    tableCell.appendChild(readSelector);
+    
+    let array = ['High', 'Medium', 'Low'];
+    for (let i = 0; i < array.length; i++) {
+        let option = document.createElement("option");
+        option.value = array[i];
+        option.text = array[i];
+        readSelector.appendChild(option);
+    }
+
+    let chosenSelectorOption = priorityValue;
+
+    for (let i, j = 0; i = readSelector.options[j]; j++) {
+        if (i.value == chosenSelectorOption) {
+            readSelector.selectedIndex = j;
+            break;
+        }
+    }
+}
+
+
+
 export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
-        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos }
+        deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
+        createEditFields, saveEditedFields }

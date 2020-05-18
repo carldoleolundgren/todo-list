@@ -2,7 +2,8 @@ import { generateProjectInput, createNewProject, getCurrentProjectName, highligh
     addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter, 
     storeProjects, loadProjects, removeProjectFromMenu } from './modules/left-menu'
 import { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
-    deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos }  from './modules/todo-content'
+    deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
+    createEditFields, saveEditedFields }  from './modules/todo-content'
 
 let project = (() => {
     newName;
@@ -45,19 +46,14 @@ function addBtnEventListeners() {
 
     document.querySelector('input.project-input').addEventListener('keyup', () => {
         addProjectOnEnter();
-        if (document.querySelectorAll('.project-remove')) {
-            document.querySelectorAll('.project-remove').forEach( (removeButton) => {
-                removeButton.addEventListener('click', (event) => {
-                    removeOneProject(event);
-                })
-            }) 
-        }
+        addProjectRemoveListener();
     })
     
     if (document.querySelectorAll('.project-remove')) {
         document.querySelectorAll('.project-remove').forEach( (removeButton) => {
             removeButton.addEventListener('click', (event) => {
                 removeOneProject(event);
+                addProjectRemoveListener();
             })
         }) 
     }
@@ -65,13 +61,8 @@ function addBtnEventListeners() {
     if (document.querySelector('.todo-add-button')) {
         document.querySelector('.todo-add-button').addEventListener('click', () => {
             addOneTodo();
-            if (document.querySelectorAll('.todo-remove-button')) {
-                document.querySelectorAll('.todo-remove-button').forEach( (button) => {
-                    button.addEventListener('click', (event) => {
-                        removeOneTodo(event);
-                    })
-                }) 
-            }
+            addTodoRemoveListener();
+            addEditListeners();
         })
     }
 
@@ -85,16 +76,48 @@ function addBtnEventListeners() {
         document.querySelectorAll('.project-name').forEach( (projectDiv) => {
             projectDiv.addEventListener('click', (event) => {                
                 populateProjectContent(event);
-                if (document.querySelectorAll('.todo-remove-button')) {
-                    document.querySelectorAll('.todo-remove-button').forEach( (button) => {
-                        button.addEventListener('click', (event) => {
-                            removeOneTodo(event);
-                        })
-                    }) 
-                }
+                addTodoRemoveListener();
+                addEditListeners();
             })
         })
-    }    
+    }
+    
+
+    function addProjectRemoveListener() {
+        if (document.querySelectorAll('.project-remove')) {
+            document.querySelectorAll('.project-remove').forEach((removeButton) => {
+                removeButton.addEventListener('click', (event) => {
+                    removeOneProject(event);
+                });
+            });
+        }
+    }
+
+    function addTodoRemoveListener() {
+        if (document.querySelectorAll('.todo-remove-button')) {
+            document.querySelectorAll('.todo-remove-button').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    removeOneTodo(event);
+                });
+            });
+        }
+    }
+
+    function addEditListeners() {
+        if (document.querySelectorAll('.todo-edit-button')) {
+            document.querySelectorAll('.todo-edit-button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (button.innerText == 'Edit') {
+                        createEditFields(button)
+                        button.innerText = 'Save'
+                    } else {
+                        saveEditedFields(button, projectListArray.indexOf(project.currentName), project.currentName)
+                        button.innerText = 'Edit'
+                    }
+                });
+            });
+        }
+    }
 }
 
 function addOneProject() {
@@ -126,6 +149,7 @@ function populateProjectContent(event) {
 }
 
 function addOneTodo() {
+    if (document.querySelector('.todo-input').value == '') return;
     addNewTodo(projectListArray.indexOf(project.currentName));
     clearTodos();
     generateProjectName(project.currentName);
@@ -143,12 +167,21 @@ function removeOneTodo(event) {
     storeTodos();
 }
 
-// delete todos upon deleting project
+// make edit button blue
+// make clicking edit button create red save button
+
+// deleting one todo deletes two sometimes
+// can't delete more than one todo
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
 // add date things
 // create expandable edit menu 
 
+// picking new date gets date-1
+// make fields editable on click
+// update todos[i] based on changes in table
+// make clicking edit button highlight whole row
+// delete todos upon deleting project
 // delete project from array upon deleting
 // fix remove button for todos
 // fix local storage for todos

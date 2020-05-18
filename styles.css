@@ -97,3 +97,15 @@ input.todo-input {
 td.checkbox-div {
     padding-left: 5%;
 }
+
+input.date-input {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.editable-row {
+    background-color: chartreuse;
+}
+
+.todo-edit-button {
+    background-color: cornflowerblue;
+}

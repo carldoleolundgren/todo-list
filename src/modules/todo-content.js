@@ -239,15 +239,13 @@ function saveEditedFields(button, projectIndex, projectName) {
     let newTitle = button.parentNode.childNodes[1].innerText
     
     let newDate; 
-    console.log(button.parentNode.childNodes[2].firstChild.valueAsDate)
     
     if (button.parentNode.childNodes[2].firstChild.valueAsDate == null) {
-        newDate = new Date().toDateString()
+        newDate = formatDate(new Date())
         console.log(newDate)
     } else {
-        let newDate = button.parentNode.childNodes[2].firstChild.valueAsDate
+        newDate = formatDate(button.parentNode.childNodes[2].firstChild.value)
         console.log(newDate)
-        newDate = new Date(newDate.getDate()).toDateString() ///////////////////
     }
     
     let newPriority = button.parentNode.childNodes[3].firstChild.value

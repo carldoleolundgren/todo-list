@@ -171,21 +171,8 @@ function removeOneTodo(event) {
     storeTodos();
 }
 
-// make edit button blue
-// make clicking edit button create red save button
-
+// editing date in old todos doesn't work
 // deleting one todo deletes two sometimes
 // can't delete more than one todo
 // organize todos by done vs not, then priority, then alpha
 // add color based on priority
-// add date things
-// create expandable edit menu 
-
-// picking new date gets date-1
-// make fields editable on click
-// update todos[i] based on changes in table
-// make clicking edit button highlight whole row
-// delete todos upon deleting project
-// delete project from array upon deleting
-// fix remove button for todos
-// fix local storage for todos

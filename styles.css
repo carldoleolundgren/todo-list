@@ -79,6 +79,21 @@ body {
     margin-left: 5%;
 }
 
+.checkbox-checked {
+    border: 1px solid rgb(172, 171, 171);
+    background-color: rgb(172, 171, 171);
+    border-radius: 100%;
+    height: 18px;
+    width: 18px;
+    float: left;
+    margin-left: 5%;
+}
+
+.done-todo {
+    color: rgb(172, 171, 171);
+    text-decoration: line-through;
+}
+
 table {
     width: 100%;
 }
@@ -100,6 +115,7 @@ td.checkbox-div {
 
 input.date-input {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 117px;
 }
 
 .editable-row {
@@ -112,4 +128,20 @@ input.date-input {
 
 .todo-save-button {
     background-color: crimson;
+}
+
+.todo-priority {
+    text-align: center;
+}
+
+.high-priority {
+    background-color: rgba(220, 20, 60, 0.6);
+}
+
+.medium-priority {
+    background-color: rgb(255, 165, 0, 0.6);
+}
+
+.low-priority {
+    background-color: rgba(0, 128, 0, 0.6);
 }

@@ -54,6 +54,15 @@ function populateTodos(project) {
                 tableCell.classList.add('todo-priority')
             }
             
+            if (tableCell.innerText == 'High') {
+                tableCell.classList.add('high-priority')
+            } else if (tableCell.innerText == 'Medium') {
+                tableCell.classList.add('medium-priority')
+            } else if (tableCell.innerText == 'Low') {
+                tableCell.classList.add('low-priority')
+
+            }
+
             tableRow.appendChild(tableCell)
         }
         addCheckbox(tableRow)
@@ -270,7 +279,7 @@ function addPrioritySelector(tableCell, priorityValue) {
     
     let array = ['High', 'Medium', 'Low'];
     for (let i = 0; i < array.length; i++) {
-        let option = document.createElement("option");
+        let option = document.createElement('option');
         option.value = array[i];
         option.text = array[i];
         readSelector.appendChild(option);
@@ -286,8 +295,29 @@ function addPrioritySelector(tableCell, priorityValue) {
     }
 }
 
+function checkOffTodo(event) {
+    event.target.classList.remove('checkbox-unchecked')
+    event.target.classList.add('checkbox-checked')
 
+    let rowLength = event.target.parentNode.parentNode.childNodes.length
+    let rowChildren = event.target.parentNode.parentNode.childNodes
+
+    for (let i = 0; i < rowLength; i++) {
+        rowChildren[i].classList.add('done-todo')
+        
+        if (i == 3) {
+            rowChildren[i].classList.remove('high-priority')
+            rowChildren[i].classList.remove('medium-priority')
+            rowChildren[i].classList.remove('low-priority')
+        }
+
+        if (i == 5) {
+            //console.log(rowChildren[i])
+            rowChildren[i].style.visibility = 'hidden';
+        }
+    }
+}
 
 export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
         deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-        createEditFields, saveEditedFields }
+        createEditFields, saveEditedFields, checkOffTodo }

@@ -247,10 +247,17 @@ function addTodoOnEnter() {
 function storeTodos() {
     let todos_seralized = JSON.stringify(todos)
     localStorage.setItem('storedTodos', todos_seralized)
+
+    let checkedProjectsIndexes_serialized = JSON.stringify(checkedProjectsIndexes)
+    localStorage.setItem('storedCheckedProjectsIndexes', checkedProjectsIndexes_serialized)
 }
 
 function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'))
+    
+    if (JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)) {
+        checkedProjectsIndexes = JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes'))
+    }
 }
 
 function createEditFields(button) {
@@ -329,7 +336,7 @@ function addPrioritySelector(tableCell, priorityValue) {
     }
 }
 
-function checkOffTodo(event, i) {
+function checkTodo(event, i) {
     event.target.classList.remove('checkbox-unchecked')
     event.target.classList.add('checkbox-checked')
     
@@ -352,9 +359,65 @@ function checkOffTodo(event, i) {
             rowChildren[i].style.visibility = 'hidden';
         }
     }
+
+    /* if (document.querySelectorAll('.checkbox-checked')) {
+        document.querySelectorAll('.checkbox-checked').forEach( (checkbox) => {
+            checkbox.addEventListener('click', (event) => {                
+                uncheckTodo(event, i);
+            })
+        })
+    }
+
+    if (document.querySelectorAll('.checkbox-unchecked')) {
+        document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
+            checkbox.addEventListener('click', (event) => {                
+                checkTodo(event, i);
+            })
+        })
+    } */
 }
 
+function uncheckTodo(event, i) { // not used for now
+    //console.log('test')
+    event.target.classList.remove('checkbox-checked')
+    event.target.classList.add('checkbox-unchecked')
+    
+    checkedProjectsIndexes[i].splice(checkedProjectsIndexes[i].indexOf(event.target.parentNode.parentNode.rowIndex), 1)
+
+    let rowLength = event.target.parentNode.parentNode.childNodes.length
+    let rowChildren = event.target.parentNode.parentNode.childNodes
+
+    for (let i = 0; i < rowLength; i++) {
+        rowChildren[i].classList.remove('done-todo')
+        
+        if (i == 3) {
+            if (rowChildren[i].innerText == 'High') rowChildren[i].classList.add('high-priority')
+            if (rowChildren[i].innerText == 'Medium') rowChildren[i].classList.add('medium-priority')
+            if (rowChildren[i].innerText == 'Low') rowChildren[i].classList.add('low-priority')
+        }
+
+        if (i == 5) {
+            rowChildren[i].style.visibility = 'initial';
+        }
+    }
+
+    /* if (document.querySelectorAll('.checkbox-checked')) {
+        document.querySelectorAll('.checkbox-checked').forEach( (checkbox) => {
+            checkbox.addEventListener('click', (event) => {                
+                uncheckTodo(event, i);
+            })
+        })
+    }
+
+    if (document.querySelectorAll('.checkbox-unchecked')) {
+        document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
+            checkbox.addEventListener('click', (event) => {                
+                checkTodo(event, i);
+            })
+        })
+    } */
+}
 
 export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
         deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-        createEditFields, saveEditedFields, checkOffTodo }
+        createEditFields, saveEditedFields, checkTodo, uncheckTodo }

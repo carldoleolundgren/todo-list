@@ -3,7 +3,7 @@ import { generateProjectInput, createNewProject, getCurrentProjectName, highligh
     storeProjects, loadProjects, removeProjectFromMenu } from './modules/left-menu'
 import { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
     deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-    createEditFields, saveEditedFields, checkOffTodo }  from './modules/todo-content'
+    createEditFields, saveEditedFields, checkTodo, uncheckTodo }  from './modules/todo-content'
 
 let project = (() => {
     newName;
@@ -34,7 +34,7 @@ function addBtnEventListeners() {
                 projectDiv.addEventListener('click', (event) => {                
                     populateProjectContent(event);
                     addTodoRemoveListener();
-                    addCheckboxListener();
+                    addCheckListener();
                 })
             })
         }    
@@ -59,7 +59,7 @@ function addBtnEventListeners() {
             addOneTodo();
             addTodoRemoveListener();
             addEditListeners();
-            addCheckboxListener();
+            addCheckListener();
         })
     }
 
@@ -75,7 +75,7 @@ function addBtnEventListeners() {
                 populateProjectContent(event);
                 addTodoRemoveListener();
                 addEditListeners();
-                addCheckboxListener();
+                addCheckListener();
             })
         })
     }
@@ -103,15 +103,17 @@ function addTodoRemoveListener() {
     }
 }
 
-function addCheckboxListener() {
+function addCheckListener() {
     if (document.querySelectorAll('.checkbox-unchecked')) {
         document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
             checkbox.addEventListener('click', (event) => {                
-                checkOffTodo(event, projectListArray.indexOf(project.currentName));
+                checkTodo(event, projectListArray.indexOf(project.currentName));
+                storeTodos();
             })
         })
     }
 }
+
 
 function addEditListeners() {
     if (document.querySelectorAll('.todo-edit-button')) {
@@ -132,6 +134,7 @@ function addEditListeners() {
                     editClicked = false;
                 }
                 addTodoRemoveListener();
+                addCheckListener();
             });
         });
     }
@@ -183,11 +186,13 @@ function removeOneTodo(event) {
     generateTodoInput();
     storeTodos();
 }
-// add uncheckTodo function
+
+// add localStorage for checked todos
 // unable to check todo after deleting
 
 // deleting one todo deletes two sometimes
 
 
+// add uncheckTodo function
 // checked todos become unchecked after adding new - create array of arrays with indexes of checked rows. Add to populateTodos function
 ///// component adding styles to specified rows

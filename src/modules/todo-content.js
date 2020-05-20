@@ -98,7 +98,6 @@ function populateCheckedTodos(project) {
                 rowChildren[j].classList.remove('medium-priority')
                 rowChildren[j].classList.remove('low-priority')
             } else if (j == 5) {
-                console.log(rowChildren[j])
                 rowChildren[j].style.visibility = 'hidden';
             }
         }
@@ -211,6 +210,9 @@ function addNewTodo(i) {
 
 function deleteTodo(i, event) {
     todos[i].splice(event.target.parentNode.rowIndex, 1)
+    if (checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex != -1)) {
+        checkedProjectsIndexes[i].splice(checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex), 1)
+    }
 }
 
 function clearTodos() {

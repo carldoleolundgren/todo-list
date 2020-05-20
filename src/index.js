@@ -11,7 +11,7 @@ let project = (() => {
     return {newName, currentName};
 })
 
-let projectListArray = [];
+let projectListArray = ['Welcome Project', 'Test Project'];
 let editClicked = false;
 
 generateProjectInput();
@@ -107,7 +107,7 @@ function addCheckboxListener() {
     if (document.querySelectorAll('.checkbox-unchecked')) {
         document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
             checkbox.addEventListener('click', (event) => {                
-                checkOffTodo(event);
+                checkOffTodo(event, projectListArray.indexOf(project.currentName));
             })
         })
     }
@@ -183,9 +183,11 @@ function removeOneTodo(event) {
     generateTodoInput();
     storeTodos();
 }
-
 // add uncheckTodo function
-// checked todos become unchecked after adding new - create array of arrays with indexes of checked rows. Add to populateTodos function
-///// component adding styles to specified rows
+// unable to check todo after deleting
 
 // deleting one todo deletes two sometimes
+
+
+// checked todos become unchecked after adding new - create array of arrays with indexes of checked rows. Add to populateTodos function
+///// component adding styles to specified rows

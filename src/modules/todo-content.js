@@ -3,17 +3,22 @@ import { format } from 'date-fns'
 let todos = [
     [
         {todoTitle: 'Test this app',
-        date: 'date',
+        date: '20 May',
         priority: 'High'}, 
-        {todoTitle: 'Access this',
-        date: 'date',
-        priority: 'Low'}
+        {todoTitle: 'Try creating a new todo by pressing enter after naming the todo',
+        date: '20 May',
+        priority: 'Medium'}
     ],
     [
-        {todoTitle: 'Make it perfect',
-        date: 'date',
-        priority: 'Medium'} 
+        {todoTitle: 'Accomplish world peace',
+        date: '20 May',
+        priority: 'Test'} 
     ]
+]
+
+let checkedProjectsIndexes = [
+    [],
+    []
 ]
 
 function formatDate(date) {
@@ -70,6 +75,33 @@ function populateTodos(project) {
         addEditBtn(tableRow)  
         todoTable.appendChild(tableRow)
         todoContent.appendChild(todoTable)
+    }
+    
+    if (checkedProjectsIndexes[project]) populateCheckedTodos(project)
+}
+
+function populateCheckedTodos(project) {
+    let allRows = document.querySelectorAll('tr')
+    for (let i = 0; i < checkedProjectsIndexes[project].length; i++) {
+        let row = allRows[checkedProjectsIndexes[project][i]]
+        let rowLength = row.childNodes.length
+        let rowChildren = row.childNodes
+        
+        row.classList.add('done-todo') 
+
+        for (let j = 0; j < rowLength; j++) {        
+            if (j == 0) {
+                row.childNodes[j].firstChild.classList.remove('checkbox-unchecked')
+                row.childNodes[j].firstChild.classList.add('checkbox-checked')
+            } else if (j == 3) {
+                rowChildren[j].classList.remove('high-priority')
+                rowChildren[j].classList.remove('medium-priority')
+                rowChildren[j].classList.remove('low-priority')
+            } else if (j == 5) {
+                console.log(rowChildren[j])
+                rowChildren[j].style.visibility = 'hidden';
+            }
+        }
     }
 }
 
@@ -295,9 +327,12 @@ function addPrioritySelector(tableCell, priorityValue) {
     }
 }
 
-function checkOffTodo(event) {
+function checkOffTodo(event, i) {
     event.target.classList.remove('checkbox-unchecked')
     event.target.classList.add('checkbox-checked')
+    
+    if (!checkedProjectsIndexes[i]) checkedProjectsIndexes[i] = []
+    checkedProjectsIndexes[i].push(event.target.parentNode.parentNode.rowIndex)
 
     let rowLength = event.target.parentNode.parentNode.childNodes.length
     let rowChildren = event.target.parentNode.parentNode.childNodes
@@ -312,11 +347,11 @@ function checkOffTodo(event) {
         }
 
         if (i == 5) {
-            //console.log(rowChildren[i])
             rowChildren[i].style.visibility = 'hidden';
         }
     }
 }
+
 
 export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
         deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,

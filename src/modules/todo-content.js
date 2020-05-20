@@ -210,9 +210,24 @@ function addNewTodo(i) {
 
 function deleteTodo(i, event) {
     todos[i].splice(event.target.parentNode.rowIndex, 1)
-    if (checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex != -1)) {
+    if (checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex) != -1) {
         checkedProjectsIndexes[i].splice(checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex), 1)
     }
+}
+
+function adjustCheckedProjectsIndexes(event, index) {
+    let targetIndex = event.target.parentNode.rowIndex
+    
+    console.log(checkedProjectsIndexes[index])
+
+    for (let j = 0; j < checkedProjectsIndexes[index].length; j++) {
+        if (checkedProjectsIndexes[index][j] > targetIndex) {
+            checkedProjectsIndexes[index][j] -= 1
+        }
+    }
+
+    console.log(checkedProjectsIndexes[index])
+
 }
 
 function clearTodos() {
@@ -420,4 +435,4 @@ function uncheckTodo(event, i) { // not used for now
 
 export { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
         deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-        createEditFields, saveEditedFields, checkTodo, uncheckTodo }
+        createEditFields, saveEditedFields, checkTodo, uncheckTodo, adjustCheckedProjectsIndexes }

@@ -3,7 +3,7 @@ import { generateProjectInput, createNewProject, getCurrentProjectName, highligh
     storeProjects, loadProjects, removeProjectFromMenu } from './modules/left-menu'
 import { generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo, 
     deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-    createEditFields, saveEditedFields, checkTodo, uncheckTodo }  from './modules/todo-content'
+    createEditFields, saveEditedFields, checkTodo, uncheckTodo, adjustCheckedProjectsIndexes }  from './modules/todo-content'
 
 let project = (() => {
     newName;
@@ -182,6 +182,9 @@ function removeOneTodo(event) {
     deleteTodo(projectListArray.indexOf(project.currentName), event);
     clearTodos();
     generateProjectName(project.currentName);
+    
+    adjustCheckedProjectsIndexes(event, projectListArray.indexOf(project.currentName));
+    
     populateTodos(projectListArray.indexOf(project.currentName));
     generateTodoInput();
     storeTodos();

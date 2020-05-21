@@ -11,7 +11,7 @@ let project = (() => {
     return {newName, currentName};
 })
 
-let projectListArray = ['Welcome Project', 'Test Project'];
+let projectListArray = [];
 let editClicked = false;
 
 generateProjectInput();
@@ -98,6 +98,7 @@ function addTodoRemoveListener() {
                 removeOneTodo(event);
                 addTodoRemoveListener();
                 addEditListeners();
+                addCheckListener();
             });
         });
     }
@@ -190,12 +191,8 @@ function removeOneTodo(event) {
     storeTodos();
 }
 
-// add localStorage for checked todos
-// unable to check todo after deleting
+// not loading right in incognito
 
 // deleting one todo deletes two sometimes
 
-
-// add uncheckTodo function
-// checked todos become unchecked after adding new - create array of arrays with indexes of checked rows. Add to populateTodos function
-///// component adding styles to specified rows
+// unable to check todo after deleting

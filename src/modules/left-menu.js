@@ -63,7 +63,7 @@ function addProjectLink(name) {
 
 function removeProjectFromMenu(event) {
     if (event.target.parentNode == null) return
-    
+
     const project = event.target.parentNode
     const projectNameDiv = project.childNodes[0]
     const removeBtn = project.childNodes[1]
@@ -94,7 +94,12 @@ function storeProjects(arr) {
 }
 
 function loadProjects() {
-    let arr = JSON.parse(localStorage.getItem('storedProjects'))
+    let arr;
+    if (!JSON.parse(localStorage.getItem('storedProjects'))) {
+        arr = ['Welcome Project', 'Test Project'];
+    } else {
+        arr = JSON.parse(localStorage.getItem('storedProjects'))
+    }
 
     if (!arr) arr = []
     

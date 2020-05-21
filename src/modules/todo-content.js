@@ -1,20 +1,6 @@
 import { format } from 'date-fns'
 
-let todos = [
-    [
-        {todoTitle: 'Test this app',
-        date: '20 May',
-        priority: 'High'}, 
-        {todoTitle: 'Try creating a new todo by pressing enter after naming the todo',
-        date: '20 May',
-        priority: 'Medium'}
-    ],
-    [
-        {todoTitle: 'Accomplish world peace',
-        date: '20 May',
-        priority: 'Test'} 
-    ]
-]
+let todos = []
 
 let checkedProjectsIndexes = [
     [],
@@ -45,6 +31,9 @@ function populateTodos(project) {
     for (let index in todos[project]) {
         let tableRow = document.createElement('tr')
         tableRow.classList.add('todo-row')
+
+        console.log(todos)
+        //if (!todos[project][index]) return
 
         for (let key in todos[project][index]) {
             let tableCell = document.createElement('td')
@@ -144,6 +133,7 @@ function generateTodoInput() {
     addCheckbox(tableRow)
 
     const inputCell = document.createElement('td')
+    inputCell.style.width = '65%'
     const titleInput = document.createElement('input')
     inputCell.appendChild(titleInput)
     titleInput.classList.add('todo-input')
@@ -218,16 +208,11 @@ function deleteTodo(i, event) {
 function adjustCheckedProjectsIndexes(event, index) {
     let targetIndex = event.target.parentNode.rowIndex
     
-    console.log(checkedProjectsIndexes[index])
-
     for (let j = 0; j < checkedProjectsIndexes[index].length; j++) {
         if (checkedProjectsIndexes[index][j] > targetIndex) {
             checkedProjectsIndexes[index][j] -= 1
         }
     }
-
-    console.log(checkedProjectsIndexes[index])
-
 }
 
 function clearTodos() {
@@ -268,7 +253,25 @@ function storeTodos() {
 }
 
 function loadTodos() {
-    todos = JSON.parse(localStorage.getItem('storedTodos'))
+    if (!JSON.parse(localStorage.getItem('storedTodos'))) {
+        todos = [
+            [
+                {todoTitle: 'Test this app',
+                date: '20 May',
+                priority: 'High'}, 
+                {todoTitle: 'Try creating a new todo by pressing enter after naming the todo',
+                date: '20 May',
+                priority: 'Medium'}
+            ],
+            [
+                {todoTitle: 'Accomplish world peace',
+                date: '20 May',
+                priority: 'Low'} 
+            ]
+        ]
+    } else {
+        todos = JSON.parse(localStorage.getItem('storedTodos'))
+    }
     
     if (JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)) {
         checkedProjectsIndexes = JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes'))

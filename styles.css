@@ -105,8 +105,9 @@ td.todo-title {
 
 input.todo-input {
     width: 90%;
+    height: 16.5px;
     float: right;
-    margin-top: 2.5px;
+    margin-top: 0px;
 }
 
 td.checkbox-div {

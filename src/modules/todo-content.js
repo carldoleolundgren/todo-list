@@ -115,7 +115,11 @@ function addEditBtn(tableRow) {
     let editBtn = document.createElement('button')
     editBtn.classList.add('todo-edit-button')
     editBtn.innerHTML = 'Edit'
-    tableRow.appendChild(editBtn)
+    
+    let editCell = document.createElement('td')
+    editCell.appendChild(editBtn)
+
+    tableRow.appendChild(editCell)
 }
 
 function generateTodoInput() {
@@ -146,10 +150,10 @@ function generateTodoInput() {
     dateInput.classList.add('date-input')
     dateInput.type = 'date'
     
-    //dateInput.value = test
     tableRow.appendChild(dateCell)
 
     const prioritySelectorCell = document.createElement('td')
+    prioritySelectorCell.innerText = 'Priority: '
     const prioritySelector = document.createElement('select')
     prioritySelector.classList.add('priority-selector')
     let arr = ['High', 'Medium', 'Low']
@@ -259,7 +263,7 @@ function loadTodos() {
                 {todoTitle: 'Test this app',
                 date: '20 May',
                 priority: 'High'}, 
-                {todoTitle: 'Try creating a new todo by pressing enter after naming the todo',
+                {todoTitle: 'Try creating a new todo by pressing enter while focused on name, date, or priority',
                 date: '20 May',
                 priority: 'Medium'}
             ],

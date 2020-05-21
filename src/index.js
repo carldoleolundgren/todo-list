@@ -67,6 +67,12 @@ function addBtnEventListeners() {
         document.querySelector('input.todo-input').addEventListener('keyup', () => {
             addTodoOnEnter();
         })
+        document.querySelector('input.date-input').addEventListener('keyup', () => {
+            addTodoOnEnter();
+        })
+        document.querySelector('select.priority-selector').addEventListener('keyup', () => {
+            addTodoOnEnter();
+        })
     }    
 
     if (document.querySelectorAll('.project-name')) {

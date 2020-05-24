@@ -116,7 +116,15 @@ function loadProjects() {
 }
 
 export {
-  generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject,
-  addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter,
-  storeProjects, loadProjects, removeProjectFromMenu,
+  generateProjectInput,
+  createNewProject,
+  getCurrentProjectName,
+  highlightCurrentProject,
+  addProjectLink,
+  removeProjectInput,
+  createProjectListArray,
+  addProjectOnEnter,
+  storeProjects,
+  loadProjects,
+  removeProjectFromMenu,
 };

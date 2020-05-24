@@ -5,10 +5,7 @@ import { format } from 'date-fns';
 
 let todos = [];
 
-let checkedProjectsIndexes = [
-  [],
-  [],
-];
+let checkedProjectsIndexes = [[], []];
 
 function formatDate(date) {
   const month = format(new Date(date), 'MMM');
@@ -175,7 +172,11 @@ function generateTodoInput() {
   table.appendChild(tableRow);
 }
 
-const todoFactory = (todoTitle, date, priority) => ({ todoTitle, date, priority });
+const todoFactory = (todoTitle, date, priority) => ({
+  todoTitle,
+  date,
+  priority,
+});
 
 function addNewTodo(i) {
   if (!todos[i]) todos[i] = [];
@@ -201,9 +202,14 @@ function addNewTodo(i) {
 
 function deleteTodo(i, event) {
   todos[i].splice(event.target.parentNode.rowIndex, 1);
-  if (checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex) !== -1) {
+  if (
+    checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex) !== -1
+  ) {
     // eslint-disable-next-line max-len
-    checkedProjectsIndexes[i].splice(checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex), 1);
+    checkedProjectsIndexes[i].splice(
+      checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex),
+      1,
+    );
   }
 }
 
@@ -252,8 +258,13 @@ function storeTodos() {
   const todosSeralized = JSON.stringify(todos);
   localStorage.setItem('storedTodos', todosSeralized);
 
-  const checkedProjectsIndexesSerialized = JSON.stringify(checkedProjectsIndexes);
-  localStorage.setItem('storedCheckedProjectsIndexes', checkedProjectsIndexesSerialized);
+  const checkedProjectsIndexesSerialized = JSON.stringify(
+    checkedProjectsIndexes,
+  );
+  localStorage.setItem(
+    'storedCheckedProjectsIndexes',
+    checkedProjectsIndexesSerialized,
+  );
 }
 
 function loadTodos() {
@@ -266,7 +277,8 @@ function loadTodos() {
           priority: 'High',
         },
         {
-          todoTitle: 'Try creating a new todo by pressing enter while focused on name, date, or priority',
+          todoTitle:
+            'Try creating a new todo by pressing enter while focused on name, date, or priority',
           date: '20 May',
           priority: 'Medium',
         },
@@ -283,8 +295,12 @@ function loadTodos() {
     todos = JSON.parse(localStorage.getItem('storedTodos'));
   }
 
-  if (JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)) {
-    checkedProjectsIndexes = JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes'));
+  if (
+    JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)
+  ) {
+    checkedProjectsIndexes = JSON.parse(
+      localStorage.getItem('storedCheckedProjectsIndexes'),
+    );
   }
 }
 
@@ -303,7 +319,7 @@ function addPrioritySelector(tableCell, priorityValue) {
   const chosenSelectorOption = priorityValue;
 
   // eslint-disable-next-line no-cond-assign
-  for (let i, j = 0; i = readSelector.options[j]; j++) {
+  for (let i, j = 0; (i = readSelector.options[j]); j++) {
     if (i.value === chosenSelectorOption) {
       readSelector.selectedIndex = j;
       break;
@@ -315,18 +331,18 @@ function createEditFields(button) {
   const row = button.parentNode;
   row.classList.add('editable-row');
 
-  const title = button.parentNode.childNodes[1];
+  const title = button.parentNode.parentNode.childNodes[1];
   title.contentEditable = true;
 
-  const date = button.parentNode.childNodes[2];
+  const date = button.parentNode.parentNode.childNodes[2];
   date.innerHTML = '';
 
   const dateInput = document.createElement('input');
   dateInput.type = 'date';
   date.appendChild(dateInput);
 
-  const priorityCell = button.parentNode.childNodes[3];
-  const priorityValue = button.parentNode.childNodes[3].innerText;
+  const priorityCell = button.parentNode.parentNode.childNodes[3];
+  const priorityValue = button.parentNode.parentNode.childNodes[3].innerText;
   priorityCell.innerHTML = '';
   addPrioritySelector(priorityCell, priorityValue);
 }
@@ -335,19 +351,23 @@ function saveEditedFields(button, projectIndex, projectName) {
   const row = button.parentNode;
   row.classList.remove('editable-row');
 
-  const { rowIndex } = button.parentNode;
+  const { rowIndex } = button.parentNode.parentNode;
 
-  const newTitle = button.parentNode.childNodes[1].innerText;
+  const newTitle = button.parentNode.parentNode.childNodes[1].innerText;
 
   let newDate;
 
-  if (button.parentNode.childNodes[2].firstChild.valueAsDate == null) {
+  if (
+    button.parentNode.parentNode.childNodes[2].firstChild.valueAsDate == null
+  ) {
     newDate = formatDate(new Date());
   } else {
-    newDate = formatDate(button.parentNode.childNodes[2].firstChild.value);
+    newDate = formatDate(
+      button.parentNode.parentNode.childNodes[2].firstChild.value,
+    );
   }
 
-  const newPriority = button.parentNode.childNodes[3].firstChild.value;
+  const newPriority = button.parentNode.parentNode.childNodes[3].firstChild.value;
 
   todos[projectIndex][rowIndex].todoTitle = newTitle;
   todos[projectIndex][rowIndex].date = newDate;
@@ -403,26 +423,33 @@ function checkTodo(event, i) {
     } */
 }
 
-function uncheckTodo(event, i) { // not used for now
+function uncheckTodo(event, i) {
+  // not used for now
   // console.log('test')
   event.target.classList.remove('checkbox-checked');
   event.target.classList.add('checkbox-unchecked');
 
-  checkedProjectsIndexes[i].splice(checkedProjectsIndexes[i].indexOf(event.target.parentNode.parentNode.rowIndex), 1);
-
+  checkedProjectsIndexes[i].splice(
+    checkedProjectsIndexes[i].indexOf(
+      // eslint-disable-next-line comma-dangle
+      event.target.parentNode.parentNode.rowIndex
+    ),
+    // eslint-disable-next-line comma-dangle
+    1
+  );
   const rowLength = event.target.parentNode.parentNode.childNodes.length;
   const rowChildren = event.target.parentNode.parentNode.childNodes;
 
-  for (let i = 0; i < rowLength; i++) {
+  for (let j = 0; j < rowLength; j++) {
     rowChildren[i].classList.remove('done-todo');
 
-    if (i == 3) {
-      if (rowChildren[i].innerText == 'High') rowChildren[i].classList.add('high-priority');
-      if (rowChildren[i].innerText == 'Medium') rowChildren[i].classList.add('medium-priority');
-      if (rowChildren[i].innerText == 'Low') rowChildren[i].classList.add('low-priority');
+    if (j === 3) {
+      if (rowChildren[i].innerText === 'High') rowChildren[i].classList.add('high-priority');
+      if (rowChildren[i].innerText === 'Medium') rowChildren[i].classList.add('medium-priority');
+      if (rowChildren[i].innerText === 'Low') rowChildren[i].classList.add('low-priority');
     }
 
-    if (i == 5) {
+    if (j === 5) {
       rowChildren[i].style.visibility = 'initial';
     }
   }
@@ -445,7 +472,20 @@ function uncheckTodo(event, i) { // not used for now
 }
 
 export {
-  generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo,
-  deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-  createEditFields, saveEditedFields, checkTodo, uncheckTodo, adjustCheckedProjectsIndexes,
+  generateProjectName,
+  clearProjectWindow,
+  populateTodos,
+  generateTodoInput,
+  addNewTodo,
+  deleteTodo,
+  clearTodos,
+  addTodoOnEnter,
+  storeTodos,
+  loadTodos,
+  removeProjectFromTodos,
+  createEditFields,
+  saveEditedFields,
+  checkTodo,
+  uncheckTodo,
+  adjustCheckedProjectsIndexes,
 };

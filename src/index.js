@@ -1,20 +1,40 @@
 /* eslint-disable no-use-before-define */
 import {
-  generateProjectInput, createNewProject, getCurrentProjectName, highlightCurrentProject,
-  addProjectLink, removeProjectInput, createProjectListArray, addProjectOnEnter,
-  storeProjects, loadProjects, removeProjectFromMenu,
+  generateProjectInput,
+  createNewProject,
+  getCurrentProjectName,
+  highlightCurrentProject,
+  addProjectLink,
+  removeProjectInput,
+  createProjectListArray,
+  addProjectOnEnter,
+  storeProjects,
+  loadProjects,
+  removeProjectFromMenu,
 } from './modules/left-menu';
 import {
-  generateProjectName, clearProjectWindow, populateTodos, generateTodoInput, addNewTodo,
-  deleteTodo, clearTodos, addTodoOnEnter, storeTodos, loadTodos, removeProjectFromTodos,
-  createEditFields, saveEditedFields, checkTodo, adjustCheckedProjectsIndexes,
+  generateProjectName,
+  clearProjectWindow,
+  populateTodos,
+  generateTodoInput,
+  addNewTodo,
+  deleteTodo,
+  clearTodos,
+  addTodoOnEnter,
+  storeTodos,
+  loadTodos,
+  removeProjectFromTodos,
+  createEditFields,
+  saveEditedFields,
+  checkTodo,
+  adjustCheckedProjectsIndexes,
 } from './modules/todo-content';
 
-const project = (() => {
+const project = () => {
   newName;
   currentName;
   return { newName, currentName };
-});
+};
 
 let projectListArray = [];
 let editClicked = false;
@@ -31,7 +51,6 @@ function addCheckListener() {
     });
   }
 }
-
 
 function addEditListeners() {
   if (document.querySelectorAll('.todo-edit-button')) {
@@ -73,7 +92,9 @@ function addOneProject() {
 function removeOneProject(event) {
   clearProjectWindow(event);
   if (event.target.parentNode) {
-    const index = projectListArray.indexOf(event.target.parentNode.childNodes[0].innerText);
+    const index = projectListArray.indexOf(
+      event.target.parentNode.childNodes[0].innerText,
+    );
     removeProjectFromTodos(index);
     projectListArray.splice(index, 1);
   }
@@ -105,7 +126,10 @@ function removeOneTodo(event) {
   clearTodos();
   generateProjectName(project.currentName);
 
-  adjustCheckedProjectsIndexes(event, projectListArray.indexOf(project.currentName));
+  adjustCheckedProjectsIndexes(
+    event,
+    projectListArray.indexOf(project.currentName),
+  );
 
   populateTodos(projectListArray.indexOf(project.currentName));
   generateTodoInput();
@@ -136,10 +160,12 @@ function addBtnEventListeners() {
     }
   });
 
-  document.querySelector('input.project-input').addEventListener('keyup', () => {
-    addProjectOnEnter();
-    addProjectRemoveListener();
-  });
+  document
+    .querySelector('input.project-input')
+    .addEventListener('keyup', () => {
+      addProjectOnEnter();
+      addProjectRemoveListener();
+    });
 
   if (document.querySelectorAll('.project-remove')) {
     document.querySelectorAll('.project-remove').forEach((removeButton) => {
@@ -166,9 +192,11 @@ function addBtnEventListeners() {
     document.querySelector('input.date-input').addEventListener('keyup', () => {
       addTodoOnEnter();
     });
-    document.querySelector('select.priority-selector').addEventListener('keyup', () => {
-      addTodoOnEnter();
-    });
+    document
+      .querySelector('select.priority-selector')
+      .addEventListener('keyup', () => {
+        addTodoOnEnter();
+      });
   }
 
   if (document.querySelectorAll('.project-name')) {

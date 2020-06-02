@@ -50,6 +50,7 @@ function populateCheckedTodos(project) {
 
 function addCheckbox(tableRow) {
   const checkbox = document.createElement('div');
+  checkbox.setAttribute('data-todo', 'checkbox');
   checkbox.classList.add('checkbox-unchecked');
 
   const checkboxCell = document.createElement('td');
@@ -68,6 +69,7 @@ function addDeleteBtn(tableRow) {
 
 function addEditBtn(tableRow) {
   const editBtn = document.createElement('button');
+  editBtn.setAttribute('data-todo', 'edit-save');
   editBtn.classList.add('todo-edit-button');
   editBtn.innerHTML = 'Edit';
 
@@ -170,6 +172,11 @@ function generateTodoInput() {
   tableRow.appendChild(addBtnCell);
 
   table.appendChild(tableRow);
+
+  const rows = table.getElementsByTagName('tr');
+  const lastRow = rows[rows.length - 1];
+  lastRow.firstChild.firstChild.removeAttribute('data-todo', 'checkbox');
+  // console.log(lastRow.firstChild.firstChild);
 }
 
 const todoFactory = (todoTitle, date, priority) => ({
@@ -186,16 +193,16 @@ function addNewTodo(i) {
       todoFactory(
         document.querySelector('.todo-input').value,
         formatDate(new Date()),
-        document.querySelector('.priority-selector').value,
-      ),
+        document.querySelector('.priority-selector').value
+      )
     );
   } else {
     todos[i].push(
       todoFactory(
         document.querySelector('.todo-input').value,
         formatDate(document.querySelector('.date-input').value),
-        document.querySelector('.priority-selector').value,
-      ),
+        document.querySelector('.priority-selector').value
+      )
     );
   }
 }
@@ -208,7 +215,7 @@ function deleteTodo(i, event) {
     // eslint-disable-next-line max-len
     checkedProjectsIndexes[i].splice(
       checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex),
-      1,
+      1
     );
   }
 }
@@ -259,11 +266,11 @@ function storeTodos() {
   localStorage.setItem('storedTodos', todosSeralized);
 
   const checkedProjectsIndexesSerialized = JSON.stringify(
-    checkedProjectsIndexes,
+    checkedProjectsIndexes
   );
   localStorage.setItem(
     'storedCheckedProjectsIndexes',
-    checkedProjectsIndexesSerialized,
+    checkedProjectsIndexesSerialized
   );
 }
 
@@ -299,7 +306,7 @@ function loadTodos() {
     JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)
   ) {
     checkedProjectsIndexes = JSON.parse(
-      localStorage.getItem('storedCheckedProjectsIndexes'),
+      localStorage.getItem('storedCheckedProjectsIndexes')
     );
   }
 }
@@ -363,11 +370,12 @@ function saveEditedFields(button, projectIndex, projectName) {
     newDate = formatDate(new Date());
   } else {
     newDate = formatDate(
-      button.parentNode.parentNode.childNodes[2].firstChild.value,
+      button.parentNode.parentNode.childNodes[2].firstChild.value
     );
   }
 
-  const newPriority = button.parentNode.parentNode.childNodes[3].firstChild.value;
+  const newPriority =
+    button.parentNode.parentNode.childNodes[3].firstChild.value;
 
   todos[projectIndex][rowIndex].todoTitle = newTitle;
   todos[projectIndex][rowIndex].date = newDate;
@@ -383,8 +391,9 @@ function saveEditedFields(button, projectIndex, projectName) {
 }
 
 function checkTodo(event, i) {
-  event.target.classList.remove('checkbox-unchecked');
+  // console.log(event.target);
   event.target.classList.add('checkbox-checked');
+  event.target.classList.remove('checkbox-unchecked');
 
   if (!checkedProjectsIndexes[i]) checkedProjectsIndexes[i] = [];
   checkedProjectsIndexes[i].push(event.target.parentNode.parentNode.rowIndex);
@@ -405,27 +414,9 @@ function checkTodo(event, i) {
       rowChildren[i].style.visibility = 'hidden';
     }
   }
-
-  /* if (document.querySelectorAll('.checkbox-checked')) {
-        document.querySelectorAll('.checkbox-checked').forEach( (checkbox) => {
-            checkbox.addEventListener('click', (event) => {
-                uncheckTodo(event, i);
-            })
-        })
-    }
-
-    if (document.querySelectorAll('.checkbox-unchecked')) {
-        document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
-            checkbox.addEventListener('click', (event) => {
-                checkTodo(event, i);
-            })
-        })
-    } */
 }
 
 function uncheckTodo(event, i) {
-  // not used for now
-  // console.log('test')
   event.target.classList.remove('checkbox-checked');
   event.target.classList.add('checkbox-unchecked');
 
@@ -437,7 +428,7 @@ function uncheckTodo(event, i) {
     // eslint-disable-next-line comma-dangle
     1
   );
-  const rowLength = event.target.parentNode.parentNode.childNodes.length;
+  /* const rowLength = event.target.parentNode.parentNode.childNodes.length;
   const rowChildren = event.target.parentNode.parentNode.childNodes;
 
   for (let j = 0; j < rowLength; j++) {
@@ -452,23 +443,7 @@ function uncheckTodo(event, i) {
     if (j === 5) {
       rowChildren[i].style.visibility = 'initial';
     }
-  }
-
-  /* if (document.querySelectorAll('.checkbox-checked')) {
-        document.querySelectorAll('.checkbox-checked').forEach( (checkbox) => {
-            checkbox.addEventListener('click', (event) => {
-                uncheckTodo(event, i);
-            })
-        })
-    }
-
-    if (document.querySelectorAll('.checkbox-unchecked')) {
-        document.querySelectorAll('.checkbox-unchecked').forEach( (checkbox) => {
-            checkbox.addEventListener('click', (event) => {
-                checkTodo(event, i);
-            })
-        })
-    } */
+  } */
 }
 
 export {

@@ -52,6 +52,7 @@ function addProjectLink(name) {
   projectName.classList.add('project-name');
 
   const removeBtn = document.createElement('button');
+  removeBtn.setAttribute('data-project', 'remove');
   removeBtn.classList.add('project-remove');
   removeBtn.innerHTML = '-';
 

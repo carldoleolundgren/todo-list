@@ -54,7 +54,7 @@ body {
 
 #todo-window {
     position: absolute;
-    left: 20%; 
+    left: 230px; 
     top: 10%; 
     width: 80%;
     bottom: 0;

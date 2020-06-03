@@ -121,8 +121,8 @@ document.addEventListener('click', (event) => {
       checkTodo(event, index);
       storeTodos();
     } else {
-      /* uncheckTodo(event, index);
-      storeTodos(); */
+      uncheckTodo(event, index);
+      storeTodos();
     }
   }
 

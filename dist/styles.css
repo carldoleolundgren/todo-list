@@ -106,7 +106,7 @@ table {
 
 td.todo-title {
     width: 65%;
-    padding-left: 6%;
+    padding-left: 1%;
 }
 
 input.todo-input {
@@ -117,7 +117,7 @@ input.todo-input {
 }
 
 td.checkbox-div {
-    padding-left: 5%;
+    padding-left: 0%;
 }
 
 input.date-input {

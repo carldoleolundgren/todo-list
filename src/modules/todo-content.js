@@ -31,9 +31,11 @@ function populateCheckedTodos(project) {
     const rowLength = row.childNodes.length;
     const rowChildren = row.childNodes;
 
-    row.classList.add('done-todo');
+    // row.classList.add('done-todo');
 
     for (let j = 0; j < rowLength; j++) {
+      rowChildren[j].classList.add('done-todo');
+
       if (j === 0) {
         row.childNodes[j].firstChild.classList.remove('checkbox-unchecked');
         row.childNodes[j].firstChild.classList.add('checkbox-checked');
@@ -391,7 +393,6 @@ function saveEditedFields(button, projectIndex, projectName) {
 }
 
 function checkTodo(event, i) {
-  // console.log(event.target);
   event.target.classList.add('checkbox-checked');
   event.target.classList.remove('checkbox-unchecked');
 
@@ -402,23 +403,23 @@ function checkTodo(event, i) {
   const rowChildren = event.target.parentNode.parentNode.childNodes;
 
   for (let j = 0; j < rowLength; j++) {
-    rowChildren[i].classList.add('done-todo');
+    rowChildren[j].classList.add('done-todo');
 
     if (j === 3) {
-      rowChildren[i].classList.remove('high-priority');
-      rowChildren[i].classList.remove('medium-priority');
-      rowChildren[i].classList.remove('low-priority');
+      rowChildren[j].classList.remove('high-priority');
+      rowChildren[j].classList.remove('medium-priority');
+      rowChildren[j].classList.remove('low-priority');
     }
 
     if (j === 5) {
-      rowChildren[i].style.visibility = 'hidden';
+      rowChildren[j].style.visibility = 'hidden';
     }
   }
 }
 
 function uncheckTodo(event, i) {
-  event.target.classList.remove('checkbox-checked');
   event.target.classList.add('checkbox-unchecked');
+  event.target.classList.remove('checkbox-checked');
 
   checkedProjectsIndexes[i].splice(
     checkedProjectsIndexes[i].indexOf(
@@ -428,22 +429,23 @@ function uncheckTodo(event, i) {
     // eslint-disable-next-line comma-dangle
     1
   );
-  /* const rowLength = event.target.parentNode.parentNode.childNodes.length;
+  const rowLength = event.target.parentNode.parentNode.childNodes.length;
   const rowChildren = event.target.parentNode.parentNode.childNodes;
+  console.log(rowChildren);
 
   for (let j = 0; j < rowLength; j++) {
-    rowChildren[i].classList.remove('done-todo');
+    rowChildren[j].classList.remove('done-todo');
 
     if (j === 3) {
-      if (rowChildren[i].innerText === 'High') rowChildren[i].classList.add('high-priority');
-      if (rowChildren[i].innerText === 'Medium') rowChildren[i].classList.add('medium-priority');
-      if (rowChildren[i].innerText === 'Low') rowChildren[i].classList.add('low-priority');
+      if (rowChildren[j].innerText === 'High') rowChildren[j].classList.add('high-priority');
+      if (rowChildren[j].innerText === 'Medium') rowChildren[j].classList.add('medium-priority');
+      if (rowChildren[j].innerText === 'Low') rowChildren[j].classList.add('low-priority');
     }
 
     if (j === 5) {
-      rowChildren[i].style.visibility = 'initial';
+      rowChildren[j].style.visibility = 'initial';
     }
-  } */
+  }
 }
 
 export {

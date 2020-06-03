@@ -110,9 +110,9 @@ td.todo-title {
 }
 
 input.todo-input {
-    width: 90%;
-    height: 16.5px;
-    float: right;
+    width: 95%;
+    height: 20px;
+    /* float: right; */
     margin-top: 0px;
 }
 
@@ -122,7 +122,7 @@ td.checkbox-div {
 
 input.date-input {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    width: 117px;
+    width: 148px;
 }
 
 .editable-row {

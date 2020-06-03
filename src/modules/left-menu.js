@@ -50,7 +50,7 @@ function addProjectLink(name) {
 
   const projectName = document.createElement('div');
   projectName.innerText = name;
-  projectName.setAttribute('data-project', 'name')
+  projectName.setAttribute('data-project', 'name');
   projectName.classList.add('project-name');
 
   const removeBtn = document.createElement('button');

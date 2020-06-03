@@ -11,6 +11,7 @@ function generateProjectInput() {
   projectAdd.appendChild(input);
 
   const addBtn = document.createElement('button');
+  addBtn.setAttribute('data-project', 'add');
   addBtn.classList.add('project-add');
   addBtn.innerHTML = '+';
   projectAdd.appendChild(addBtn);
@@ -49,6 +50,7 @@ function addProjectLink(name) {
 
   const projectName = document.createElement('div');
   projectName.innerText = name;
+  projectName.setAttribute('data-project', 'name')
   projectName.classList.add('project-name');
 
   const removeBtn = document.createElement('button');
@@ -78,17 +80,6 @@ function removeProjectFromMenu(event) {
 function createProjectListArray(arr, name) {
   if (name === '') return;
   arr.push(name);
-}
-
-function addProjectOnEnter() {
-  // eslint-disable-next-line no-restricted-globals
-  if (event.keyCode === 13) {
-    // eslint-disable-next-line no-restricted-globals
-    event.preventDefault();
-    document.querySelector('button.project-add').click();
-    document.querySelector('input.project-input').focus();
-    document.querySelector('input.project-input').select();
-  }
 }
 
 function storeProjects(arr) {
@@ -124,7 +115,6 @@ export {
   addProjectLink,
   removeProjectInput,
   createProjectListArray,
-  addProjectOnEnter,
   storeProjects,
   loadProjects,
   removeProjectFromMenu,

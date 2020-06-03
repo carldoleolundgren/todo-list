@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-use-before-define */
 import {
   generateProjectInput,
@@ -7,12 +8,12 @@ import {
   addProjectLink,
   removeProjectInput,
   createProjectListArray,
-  addProjectOnEnter,
   storeProjects,
   loadProjects,
   removeProjectFromMenu,
 } from './modules/left-menu';
 import {
+  addEmptyIndexArr,
   generateProjectName,
   clearProjectWindow,
   populateTodos,
@@ -20,7 +21,6 @@ import {
   addNewTodo,
   deleteTodo,
   clearTodos,
-  addTodoOnEnter,
   storeTodos,
   loadTodos,
   removeProjectFromTodos,
@@ -48,6 +48,9 @@ function addOneProject() {
   createProjectListArray(projectListArray, project.newName);
   removeProjectInput();
   generateProjectInput();
+  addEmptyIndexArr();
+  document.querySelector('input.project-input').focus();
+  document.querySelector('input.project-input').select();
   storeProjects(projectListArray);
 }
 
@@ -80,6 +83,8 @@ function addOneTodo() {
   generateProjectName(project.currentName);
   populateTodos(projectListArray.indexOf(project.currentName));
   generateTodoInput();
+  document.querySelector('input.todo-input').focus();
+  document.querySelector('input.todo-input').select();
   storeTodos();
 }
 
@@ -100,17 +105,17 @@ function removeOneTodo(event) {
 
 document.addEventListener('click', (event) => {
   // add project
-  if (event.target.classList.value === 'project-add') {
+  if (event.target.dataset.project === 'add') {
     addOneProject();
   }
 
   // remove project
-  if (event.target.classList.value === 'project-remove') {
+  if (event.target.dataset.project === 'remove') {
     removeOneProject(event);
   }
 
   // open project
-  if (event.target.classList.value === 'project-name') {
+  if (event.target.dataset.project === 'name') {
     populateProjectContent(event);
   }
 
@@ -127,12 +132,12 @@ document.addEventListener('click', (event) => {
   }
 
   // delete todo
-  if (event.target.classList.value === 'todo-remove-button') {
+  if (event.target.dataset.todo === 'remove') {
     removeOneTodo(event);
   }
 
   // add todo
-  if (event.target.classList.value === 'todo-add-button') {
+  if (event.target.dataset.todo === 'add') {
     addOneTodo();
   }
 
@@ -151,16 +156,18 @@ document.addEventListener('click', (event) => {
 });
 
 document.addEventListener('keyup', (event) => {
-  if (event.target.classList.value === 'project-input') {
-    addProjectOnEnter();
-  }
+  if (event.keyCode === 13) {
+    if (event.target.classList.value === 'project-input') {
+      addOneProject();
+    }
 
-  if (
-    event.target.classList.value === 'project-input'
-    || document.querySelector('input.date-input')
-    || document.querySelector('select.priority-selector')
-  ) {
-    addTodoOnEnter();
+    if (
+      event.target.classList.value === 'project-input'
+      || document.querySelector('input.date-input')
+      || document.querySelector('select.priority-selector')
+    ) {
+      addOneTodo();
+    }
   }
 });
 

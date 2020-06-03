@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
@@ -5,7 +6,11 @@ import { format } from 'date-fns';
 
 let todos = [];
 
-let checkedProjectsIndexes = [[], []];
+let checkedTodosIndexes = [[], []];
+
+function addEmptyIndexArr() {
+  checkedTodosIndexes.push([]);
+}
 
 function formatDate(date) {
   const month = format(new Date(date), 'MMM');
@@ -26,12 +31,10 @@ function generateProjectName(name) {
 
 function populateCheckedTodos(project) {
   const allRows = document.querySelectorAll('tr');
-  for (let i = 0; i < checkedProjectsIndexes[project].length; i++) {
-    const row = allRows[checkedProjectsIndexes[project][i]];
+  for (let i = 0; i < checkedTodosIndexes[project].length; i++) {
+    const row = allRows[checkedTodosIndexes[project][i]];
     const rowLength = row.childNodes.length;
     const rowChildren = row.childNodes;
-
-    // row.classList.add('done-todo');
 
     for (let j = 0; j < rowLength; j++) {
       rowChildren[j].classList.add('done-todo');
@@ -64,6 +67,7 @@ function addCheckbox(tableRow) {
 
 function addDeleteBtn(tableRow) {
   const deleteBtn = document.createElement('button');
+  deleteBtn.setAttribute('data-todo', 'remove');
   deleteBtn.classList.add('todo-remove-button');
   deleteBtn.innerHTML = '-';
   tableRow.appendChild(deleteBtn);
@@ -120,7 +124,7 @@ function populateTodos(project) {
     todoContent.appendChild(todoTable);
   }
 
-  if (checkedProjectsIndexes[project]) populateCheckedTodos(project);
+  if (checkedTodosIndexes[project]) populateCheckedTodos(project);
 }
 
 function generateTodoInput() {
@@ -168,6 +172,7 @@ function generateTodoInput() {
 
   const addBtnCell = document.createElement('td');
   const addBtn = document.createElement('button');
+  addBtn.setAttribute('data-todo', 'add');
   addBtn.classList.add('todo-add-button');
   addBtn.innerHTML = '+';
   addBtnCell.appendChild(addBtn);
@@ -212,11 +217,11 @@ function addNewTodo(i) {
 function deleteTodo(i, event) {
   todos[i].splice(event.target.parentNode.rowIndex, 1);
   if (
-    checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex) !== -1
+    checkedTodosIndexes[i].indexOf(event.target.parentNode.rowIndex) !== -1
   ) {
     // eslint-disable-next-line max-len
-    checkedProjectsIndexes[i].splice(
-      checkedProjectsIndexes[i].indexOf(event.target.parentNode.rowIndex),
+    checkedTodosIndexes[i].splice(
+      checkedTodosIndexes[i].indexOf(event.target.parentNode.rowIndex),
       1
     );
   }
@@ -225,9 +230,9 @@ function deleteTodo(i, event) {
 function adjustCheckedProjectsIndexes(event, index) {
   const targetIndex = event.target.parentNode.rowIndex;
 
-  for (let j = 0; j < checkedProjectsIndexes[index].length; j++) {
-    if (checkedProjectsIndexes[index][j] > targetIndex) {
-      checkedProjectsIndexes[index][j] -= 1;
+  for (let j = 0; j < checkedTodosIndexes[index].length; j++) {
+    if (checkedTodosIndexes[index][j] > targetIndex) {
+      checkedTodosIndexes[index][j] -= 1;
     }
   }
 }
@@ -252,23 +257,12 @@ function removeProjectFromTodos(index) {
   todos.splice(index, 1);
 }
 
-function addTodoOnEnter() {
-  // eslint-disable-next-line no-restricted-globals
-  if (event.keyCode === 13) {
-    // eslint-disable-next-line no-restricted-globals
-    event.preventDefault();
-    document.querySelector('button.todo-add-button').click();
-    document.querySelector('input.todo-input').focus();
-    document.querySelector('input.todo-input').select();
-  }
-}
-
 function storeTodos() {
   const todosSeralized = JSON.stringify(todos);
   localStorage.setItem('storedTodos', todosSeralized);
 
   const checkedProjectsIndexesSerialized = JSON.stringify(
-    checkedProjectsIndexes
+    checkedTodosIndexes
   );
   localStorage.setItem(
     'storedCheckedProjectsIndexes',
@@ -307,7 +301,7 @@ function loadTodos() {
   if (
     JSON.parse(localStorage.getItem('storedCheckedProjectsIndexes') != null)
   ) {
-    checkedProjectsIndexes = JSON.parse(
+    checkedTodosIndexes = JSON.parse(
       localStorage.getItem('storedCheckedProjectsIndexes')
     );
   }
@@ -376,8 +370,7 @@ function saveEditedFields(button, projectIndex, projectName) {
     );
   }
 
-  const newPriority =
-    button.parentNode.parentNode.childNodes[3].firstChild.value;
+  const newPriority = button.parentNode.parentNode.childNodes[3].firstChild.value;
 
   todos[projectIndex][rowIndex].todoTitle = newTitle;
   todos[projectIndex][rowIndex].date = newDate;
@@ -396,8 +389,8 @@ function checkTodo(event, i) {
   event.target.classList.add('checkbox-checked');
   event.target.classList.remove('checkbox-unchecked');
 
-  if (!checkedProjectsIndexes[i]) checkedProjectsIndexes[i] = [];
-  checkedProjectsIndexes[i].push(event.target.parentNode.parentNode.rowIndex);
+  if (!checkedTodosIndexes[i]) checkedTodosIndexes[i] = [];
+  checkedTodosIndexes[i].push(event.target.parentNode.parentNode.rowIndex);
 
   const rowLength = event.target.parentNode.parentNode.childNodes.length;
   const rowChildren = event.target.parentNode.parentNode.childNodes;
@@ -421,8 +414,8 @@ function uncheckTodo(event, i) {
   event.target.classList.add('checkbox-unchecked');
   event.target.classList.remove('checkbox-checked');
 
-  checkedProjectsIndexes[i].splice(
-    checkedProjectsIndexes[i].indexOf(
+  checkedTodosIndexes[i].splice(
+    checkedTodosIndexes[i].indexOf(
       // eslint-disable-next-line comma-dangle
       event.target.parentNode.parentNode.rowIndex
     ),
@@ -431,7 +424,6 @@ function uncheckTodo(event, i) {
   );
   const rowLength = event.target.parentNode.parentNode.childNodes.length;
   const rowChildren = event.target.parentNode.parentNode.childNodes;
-  console.log(rowChildren);
 
   for (let j = 0; j < rowLength; j++) {
     rowChildren[j].classList.remove('done-todo');
@@ -456,7 +448,6 @@ export {
   addNewTodo,
   deleteTodo,
   clearTodos,
-  addTodoOnEnter,
   storeTodos,
   loadTodos,
   removeProjectFromTodos,
@@ -465,4 +456,5 @@ export {
   checkTodo,
   uncheckTodo,
   adjustCheckedProjectsIndexes,
+  addEmptyIndexArr,
 };
